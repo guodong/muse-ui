@@ -10,7 +10,7 @@
         
     },
     header: {
-        title: "Graphene UI",
+        title: "Muse UI",
         account: "Account",
         dashboard: "Dashboard",
         explorer: "Explorer",
@@ -31,7 +31,7 @@
         pending: "pending %(blocks)s blocks"
     },
     account: {
-        welcome: "Welcome to Graphene",
+        welcome: "Welcome to Muse",
         asset: "Asset",
         market_value: "Market Value",
         hour_24: "24hr Change",
@@ -457,7 +457,7 @@
         remove_ws: "Remove websocket API"
     },
     footer: {
-        title: "Graphene",
+        title: "Muse",
         block: "Head block",
         loading: "Loading..."
     },

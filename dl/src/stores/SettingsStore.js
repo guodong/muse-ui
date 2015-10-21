@@ -21,6 +21,7 @@ class SettingsStore {
         });
 
         this.defaultMarkets = Immutable.Map([
+                                            /*
             ["BTC_" + CORE_ASSET, {"quote":"BTC","base":CORE_ASSET}],
             ["CNY_" + CORE_ASSET, {"quote":"CNY","base":CORE_ASSET}],
             ["EUR_" + CORE_ASSET, {"quote":"EUR","base":CORE_ASSET}],
@@ -30,6 +31,7 @@ class SettingsStore {
             ["BTC_USD", {"quote":"BTC","base":"USD"}],
             ["BTC_CNY", {"quote":"BTC","base":"CNY"}],
             ["TRADE.BTC_" + CORE_ASSET, {"quote":"TRADE.BTC","base":CORE_ASSET} ]
+            */
         ]);
 
         // If you want a default value to be translated, add the translation to settings in locale-xx.js
