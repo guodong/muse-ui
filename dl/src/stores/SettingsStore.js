@@ -3,7 +3,7 @@ var SettingsActions = require("../actions/SettingsActions");
 
 var Immutable = require("immutable");
 const STORAGE_KEY = "__muse__";
-const CORE_ASSET = "NOTE";
+const CORE_ASSET = "MUSE";
 
 var ls = typeof localStorage === "undefined" ? null : localStorage;
 

@@ -58,8 +58,8 @@ class Header extends React.Component {
         if (this.props.current_wallet) lock_unlock = (
             <div className="grp-menu-item" >
             { this.props.locked ?
-                <a href onClick={this._toggleLock.bind(this)} data-tip={locked_tip} data-place="bottom" data-type="light"><Icon name="locked"/></a>
-                : <a href onClick={this._toggleLock.bind(this)} data-tip={unlocked_tip} data-place="bottom" data-type="light"><Icon name="unlocked"/></a> }
+                <a href onClick={this._toggleLock.bind(this)} data-tip={locked_tip} data-place="bottom"><Icon name="locked"/></a>
+                : <a href onClick={this._toggleLock.bind(this)} data-tip={unlocked_tip} data-place="bottom"><Icon name="unlocked"/></a> }
             </div>);
         return (
             <div className="header menu-group primary">
@@ -80,12 +80,12 @@ class Header extends React.Component {
                 <div className="show-for-medium medium-4">
                     <div className="grp-menu-items-group header-right-menu">
                         <div className="grp-menu-item" >
-                            <Link to="settings" data-tip={settings} data-place="bottom" data-type="light"><Icon name="cog"/></Link>
+                            <Link to="settings" data-tip={settings} data-place="bottom"><Icon name="cog"/></Link>
                         </div>
                         {lock_unlock}
-                        <div className="grp-menu-item" >
+                        {/*<div className="grp-menu-item" >
                             <Link to="help"><Translate component="span" content="header.help"/></Link>
-                        </div>
+                        </div>*/}
                     </div>
                 </div>
             </div>

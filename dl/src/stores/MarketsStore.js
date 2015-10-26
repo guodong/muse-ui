@@ -41,17 +41,17 @@ class MarketsStore {
         this.bucketSize = 300;
         this.priceHistory = [];
         this.lowestCallPrice = null;
-        this.marketBase = "NOTE";
+        this.marketBase = "MUSE";
 
         this.baseAsset = {
             id: "1.3.0",
-            symbol: "NOTE",
+            symbol: "MUSE",
             precision: 5
         };
 
         this.coreAsset = {
             id: "1.3.0",
-            symbol: "NOTE",
+            symbol: "MUSE",
             precision: 5
         };
 
