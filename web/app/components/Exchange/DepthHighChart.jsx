@@ -15,7 +15,9 @@ class DepthHighChart extends React.Component {
             nextProps.plotLine !== this.props.plotLine ||
             nextProps.feedPrice !== this.props.feedPrice ||
             nextProps.settlementPrice !== this.props.settlementPrice ||
-            nextProps.leftOrderBook !== this.props.leftOrderBook
+            nextProps.leftOrderBook !== this.props.leftOrderBook ||
+            nextProps.SQP !== this.props.SQP ||
+            nextProps.LCP !== this.props.LCP 
         );
     }
 
@@ -56,15 +58,13 @@ class DepthHighChart extends React.Component {
         }
 
         power *= 10;
-        console.log("power:", power, flat_bids.length);
+
         if (power !== 1) {
             if (flatBids.length) {
                 flatBids.forEach(bid => {
                     bid[0] *= power;
                 })
             }
-
-            console.log("power:", power, flatBids.length);
 
             if (flatAsks.length) {
                 flatAsks.forEach(ask => {
@@ -112,9 +112,9 @@ class DepthHighChart extends React.Component {
                 backgroundColor: "rgba(0, 0, 0, 0.3)",
                 formatter: function() {
                     let name = this.series.name.split(" ")[0];
-                    return `<span style="font-size: 90%;">${utils.format_number(this.x / power, base.precision)} ${priceSymbol}</span><br/>
+                    return `<span style="font-size: 90%;">${utils.format_number(this.x / power, base.get("precision"))} ${priceSymbol}</span><br/>
                         <span style="color:${this.series.color}">\u25CF</span>
-                        ${name}: <b>${utils.format_number(this.y, base.precision)} ${quoteSymbol}</b>`;
+                        ${name}: <b>${utils.format_number(this.y, base.get("precision"))} ${quoteSymbol}</b>`;
                 },
                 style: {
                     color: "#FFFFFF"
@@ -293,12 +293,10 @@ class DepthHighChart extends React.Component {
             };
         }
 
-        console.log("flatBids:", flatBids.length, "flatAsks:", flatAsks.length, config);
-
         return (
             <div className="grid-content no-overflow middle-content">
-                <p className="bid-total">{utils.format_number(totalBids, base.precision)} {baseSymbol}</p>
-                <p className="ask-total">{utils.format_number(totalAsks, quote.precision)} {quoteSymbol}</p>
+                <p className="bid-total">{utils.format_number(totalBids, base.get("precision"))} {baseSymbol}</p>
+                <p className="ask-total">{utils.format_number(totalAsks, quote.get("precision"))} {quoteSymbol}</p>
                 {flatBids || flatAsks || flatCalls ? <Highstock config={config}/> : null}
             </div>
         );

@@ -13,8 +13,8 @@
         title: "Graphene UI",
         account: "Account",
         dashboard: "Dashboard",
-        explorer: "Explorer",
-        exchange: "Exchange",
+        explorer: "Explore",
+        exchange: "Trade",
         payments: "Transfer", // temporary, once we have tabs on Payments, I'll change it back to payments (Valentine)
         logout: "Logout",
         settings: "Settings",
@@ -259,6 +259,8 @@
         delta_debt: "Debt change",
         new_url: "Website",
         publisher: "Publisher",
+        market_fee: "Market fee",
+        max_market_fee: "Maximum market fee",
         trxTypes: {
             transfer: "Transfer",
             limit_order_create: "Place order",
@@ -487,7 +489,10 @@
         vertical: "Vertical",
         horizontal: "Horizontal",
         confirm_buy: "Confirm order: Buy %(buy_amount)s %(buy_symbol)s at a price of %(price_amount)s %(price_symbol)s",
-        confirm_sell: "Confirm order: Sell %(sell_amount)s %(sell_symbol)s at a price of %(price_amount)s %(price_symbol)s"
+        confirm_sell: "Confirm order: Sell %(sell_amount)s %(sell_symbol)s at a price of %(price_amount)s %(price_symbol)s",
+        market_name: "Market name",
+        quote_supply: "Quote supply",
+        base_supply: "Base supply"
     },
     markets: {
         base: "Base asset",
@@ -525,6 +530,7 @@
         import_backup: "Import Backup",
         restore_backup: "Restore Backup",
         import_keys: "Import Keys",
+        import_keys_tool: "Key Import Tool",
         brainkey: "Brainkey",
         new_wallet: "New Wallet",
         active_wallet: "Active Wallet",
@@ -552,6 +558,7 @@
         no_balance: "No balance claims",
         claim_balance: "Claim Balance",
         claim_balances: "Claim Balances",
+        balance_claim_lookup: "Lookup balances",
         unclaimed: "Unclaimed",
         unclaimed_vesting: "Unclaimed (vesting)",
         no_accounts: "No Accounts",

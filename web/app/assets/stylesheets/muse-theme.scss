@@ -5,27 +5,28 @@
 $light-text-color: #3F2E55;
 $dark-text-color: #3F2E55;
 $primary-text-color: #3F2E55;
-$secondary-text-color: darken($primary-text-color, 20%);
-$link-text-color: #aeabff;
+$secondary-text-color: darken($primary-text-color, 15%);
+$link-text-color: #3A1041;
 $error-text-color: #E3745B;
 
 $bg-color: #FFF;
 $panel-bg-color: #e5e6e4;
 $light-panel-bg-color: #FFF;
 $super-light-panel-bg-color: darken($light-panel-bg-color, 1%);
-$button-bg-color: #8c88ff;
-$secondary-button-bg-color: #999999;
+$button-bg-color: #3A1041;
+$secondary-button-bg-color: #EE4266;
 
 $alert-color: $error-text-color;
 $info-color: #A0A4B8;
 $success-color: #21D19F;
-$warning-color: #f35b92;
+$warning-color: #DB4573;
 $fee-color: #7f055e;
 
 // general
 
 body {
   @include color($primary-text-color, $bg-color);
+  color: lighten($primary-text-color, 10%);
 }
 
 hr {
@@ -35,7 +36,11 @@ hr {
 a {
   color: $link-text-color;
   &:hover, &:focus, &:active {
-    color: darken($link-text-color, 4%);
+    color: lighten($link-text-color, 12%);
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    transition: all .5s ease;
+
   }
 }
 
@@ -169,14 +174,17 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .menu-group.primary {
-  background-color: darken($panel-bg-color, 20%);
+  background-color: $button-bg-color;
   .menu-bar {
-  background-color: darken($panel-bg-color, 20%);
+  background-color: $button-bg-color;
   }
     .button {
-    background-color: darken($panel-bg-color, 20%);
+    background-color: $button-bg-color;
     &:hover {
-    background-color: lighten($panel-bg-color, 80%);
+    background-color: lighten($panel-bg-color, 20%);
+    }
+    > li > a:hover {
+      background-color: lighten($button-bg-color, 20%);
     }
   }
 }
@@ -272,10 +280,13 @@ h1, h2, h3, h4, h5, h6 {
 .card {
   @include color($primary-text-color, $panel-bg-color);
   background-color: $panel-bg-color;
+  > h4 {
+    background-color: darken($super-light-panel-bg-color, 4%);
+  }
   &:hover {
     background-color: lighten($panel-bg-color, 4%);
     > h4 {
-      background-color: lighten($light-panel-bg-color, 4%);
+      background-color: darken($super-light-panel-bg-color, 12%);
     }
   }
   a {
@@ -402,6 +413,7 @@ td.orderHistoryBid {
   color: $success-color;
   font-weight: bold;
 }
+
 
 
 // Account page
@@ -575,6 +587,9 @@ section input[type="text"] {
   }
 }
 
+.active-witness {
+  background-color: $button-bg-color;
+}
 
 
 // Asset

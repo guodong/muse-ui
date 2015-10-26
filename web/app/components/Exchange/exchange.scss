@@ -1,6 +1,7 @@
 $bid-color: #50D2C2;
 $ask-color: #E3745B;
 $call-color: #BBBF2B;
+$light-panel-bg-color: #353742;
 
 .market-layout {
   > .grid-block {
@@ -16,9 +17,30 @@ $call-color: #BBBF2B;
   }*/
 }
 
+.orderbook {
+  small {
+    letter-spacing: 0.1rem;
+    font-size: 75%;
+    float: right;
+  }
+}
+
 .market-content {
   padding-left: 5px !important;
   padding-right: 5px !important;
+  small {
+    letter-spacing: 0.1rem;
+    font-size: 75%;
+    float: right;
+  }
+}
+
+.middle-content {
+  small {
+    letter-spacing: 0.1rem;
+    font-size: 75%;
+    float: right;
+  }
 }
 
 [class*="block-grid-"] > li {
@@ -164,18 +186,37 @@ p.order-table-title {
     border-top: 1px solid #777;
     border-bottom: 1px solid #777;
   }
-  .top-header {
-    border-top: 1px solid #777;
-  }
-  .bottom-header {
-    border-bottom: 1px solid #777;
-  }
+  // .top-header {
+  //   border-top: 1px solid #777;
+  // }
+  // .bottom-header {
+  //   border-bottom: 1px solid #777;
+  // }
+}
+
+.orderbook-latest-price {
+  border-bottom: 1px solid #777;
+  border-top: 1px solid #777;
+}
+
+.left-orderbook-header {
+  width: 100%;
+  font-size: 0.75rem;
+}
+
+.top-header {
+  border-bottom: 1px solid #777;
+  padding-bottom: 0.25rem;
+}
+.bottom-header {
+  border-top: 1px solid #777;
+  padding-top: 0.25rem;
 }
 
 tr.top-header, tr.bottom-header, tr.spread-row {
   &:hover > td {
     background-color: inherit !important;
-    cursor: auto !important;
+    cursor: pointer !important;
   }
 }
 
@@ -283,9 +324,13 @@ a.order-cancel {
 }
 
 .active-bucket {
-  text-transform: none !important;
-  background-color: rgb(80, 210, 194) !important;
   font-size: 0.75rem !important;
+  background-color: lighten($light-panel-bg-color, 12%);
+  text-transform: uppercase;
+}
+
+.bucket-option {
+  cursor: pointer;
 }
 
 .buy-sell-row {
@@ -319,7 +364,6 @@ a.order-cancel {
 
 .buy-sell-box {
     text-align: center;
-    background: grey;
     height: 1.75rem;
     line-height: 1.75rem;
     font-weight: 700;
@@ -377,4 +421,21 @@ input[type=number]::-webkit-outer-spin-button {
 
 .middle-content {
   margin-bottom: 1rem;
+}
+
+.header-sub-title {
+  font-size: 80%;
+  color: white;
+}
+
+.market-right-padding-only {
+  padding: 0 0.6rem 0 0 !important;
+}
+
+.change-up {
+  color: $bid-color !important;
+}
+
+.change-down {
+color: $ask-color !important;
 }

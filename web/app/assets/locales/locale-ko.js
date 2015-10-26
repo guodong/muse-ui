@@ -313,7 +313,7 @@ module.exports = {
             block_times: "블록 타임",
             block_time: "블록 타임",
             transactions: "거래 수",
-            recently_missed_blocks: "최근 미생성된 블럭 수",
+            recently_missed_blocks: "최근 누락 블록 수",
             trx_per_block: "블록당 거래",
             active_committee_members: "활동중인 위원",
             active_witnesses: "활동중인 증인",
@@ -422,8 +422,8 @@ module.exports = {
             card: "카드뷰",
             table: "테이블뷰",
             rank: "순위",
-            last_confirmed: "마지막 승인블럭",
-            missed: "미생성 블럭수"
+            last_confirmed: "마지막 승인블록",
+            missed: "누락 블록수"
             
         },
         committee_members: {
@@ -487,7 +487,10 @@ module.exports = {
         vertical: "수직시세",
         horizontal: "수평시세",
         confirm_buy: "주문 확인: %(buy_amount)s %(buy_symbol)s 을 %(price_amount)s %(price_symbol)s 에 매수",
-        confirm_sell: "주문 확인: %(sell_amount)s %(sell_symbol)s 을 %(price_amount)s %(price_symbol)s 에 매도"
+        confirm_sell: "주문 확인: %(sell_amount)s %(sell_symbol)s 을 %(price_amount)s %(price_symbol)s 에 매도",
+        market_name: "종목명",
+        quote_supply: "유통량",
+        base_supply: "유통량"
     },
     markets: {
         base: "기초 자산",
@@ -512,7 +515,7 @@ module.exports = {
         delete_wallet: "지갑 삭제",
         delete_confirm_line1: "정말로 삭제하시겠습니까?",
         delete_confirm_line2: "예상치 못한 나쁜 일이 벌어질 수 있습니다!",
-        delete_confirm_line3: "삭제되면 되돌릴 수 없습니다This action CANNOT be undone.",
+        delete_confirm_line3: "삭제되면 되돌릴 수 없습니다",
         delete_wallet_name: "지갑(%(name)s)을 삭제함",
         balance_claims: "잔고 청구",
         download: "다운로드",
@@ -524,7 +527,8 @@ module.exports = {
         create_backup_of: "(%(name)s 지갑의 백업을 생성)",
         import_backup: "백업파일 불러오기",
         restore_backup: "백업파일 복구",
-        import_keys: "키 불러오기",
+        import_keys: "키 가져오기",
+        import_keys_tool: "키 가져오기 도구",
         brainkey: "브레인키",
         new_wallet: "새 지갑",
         active_wallet: "현재 지갑",
@@ -552,6 +556,7 @@ module.exports = {
         no_balance: "청구가능 잔고 없음",
         claim_balance: "잔고 청구",
         claim_balances: "잔고 청구",
+        balance_claim_lookup: "잔고 검색",
         unclaimed: "미청구액",
         unclaimed_vesting: "미청구액 (확정금)",
         no_accounts: "계정이 없음",

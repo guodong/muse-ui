@@ -106,9 +106,7 @@ class MarketsActions {
                     settlePromise,
                     Apis.instance().history_api().exec("get_market_history", [
                         base.get("id"), quote.get("id"), bucketSize, startDate.toISOString().slice(0, -5), endDate.toISOString().slice(0, -5)
-                    ]),
-                    Apis.instance().history_api().exec("get_market_history_buckets", [])
-
+                    ])
                 ])
                 .then(results => {
                     this.dispatch({
@@ -116,7 +114,6 @@ class MarketsActions {
                         calls: results[1],
                         settles: results[2],
                         price: results[3],
-                        buckets: results[4],
                         market: subID,
                         base: base,
                         quote: quote,
@@ -143,7 +140,7 @@ class MarketsActions {
 
             let startDate = new Date();
             let endDate = new Date();
-            startDate.setDate(startDate.getDate() - 300);
+            startDate = new Date(startDate.getTime() - bucketSize * 500 * 1000);
             endDate.setDate(endDate.getDate() + 1);
             return Promise.all([
                     Apis.instance().db_api().exec("subscribe_to_market", [
@@ -157,10 +154,11 @@ class MarketsActions {
                     Apis.instance().history_api().exec("get_market_history", [
                         base.get("id"), quote.get("id"), bucketSize, startDate.toISOString().slice(0, -5), endDate.toISOString().slice(0, -5)
                     ]),
-                    Apis.instance().history_api().exec("get_market_history_buckets", [])
+                    Apis.instance().history_api().exec("get_market_history_buckets", []),
+                    Apis.instance().history_api().exec("get_fill_order_history", [base.get("id"), quote.get("id")])
                 ])
                 .then((results) => {
-                    // console.log("market subscription success:", results[0], results);
+                    console.log("market subscription success:", results[0], results);
                     subs[subID] = true;
 
                     this.dispatch({
@@ -169,6 +167,7 @@ class MarketsActions {
                         settles: results[3],
                         price: results[4],
                         buckets: results[5],
+                        history: results[6],
                         market: subID,
                         base: base,
                         quote: quote,
@@ -180,6 +179,10 @@ class MarketsActions {
                 });
         }
         return Promise.resolve(true);
+    }
+
+    clearMarket() {
+        this.dipatch();
     }
 
     unSubscribeMarket(quote, base) {

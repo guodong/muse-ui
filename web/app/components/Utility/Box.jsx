@@ -6,7 +6,6 @@ import Translate from "react-translate-component";
 import LoadingIndicator from "../LoadingIndicator";
 import Accordion from 'react-foundation-apps/src/accordion';
 
-require("./Box.scss");
 
 class Box extends React.Component {
 
@@ -23,8 +22,9 @@ class Box extends React.Component {
 */
 
     renderOriginal() {
+        var className = "Box" + this.props.className ? " " + this.props.className : "";
         return (
-            <div className="Box">
+            <div className={className}>
 
                 {(this.props.header) ? (
                     <div className="BoxHeader">
@@ -48,8 +48,9 @@ class Box extends React.Component {
 
     renderAccordian() {
         var title = this.props.header ? this.props.header : '';
+        var className = "Box" + this.props.className ? " " + this.props.className : "";
         return (
-            <div className="Box">
+            <div className={className}>
 
                 <Accordion multiOpen="true">
                     <Accordion.Item title={title}>
