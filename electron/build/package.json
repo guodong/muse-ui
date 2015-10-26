@@ -1,10 +1,10 @@
 {
-  "name": "Graphene_light",
-  "productName": "Graphene_light",
-  "identifier": "com.cryptonomex.graphene",
-  "description": "Graphene - financial smart contracts platform",
-  "version": "0.0.1",
-  "author": "contact@cryptonomex.com",
+  "name": "muse",
+  "productName": "muse",
+  "identifier": "com.museblockchain",
+  "description": "Muse blockchain client",
+  "version": "1.0.0",
+  "author": "contact@museblockchain.com",
   "main": "electron.js",
   "config": {
     "target": "development"
