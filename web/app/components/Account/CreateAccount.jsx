@@ -166,7 +166,7 @@ class CreateAccount extends React.Component {
                                 {this.state.loading ?  <LoadingIndicator type="circle"/> :<button className={buttonClass}><Translate content="account.create_account" /></button>}
                                 <br/>
                                 <br/>
-                                <label><Link to="existing-account"><Translate content="account.existing_accounts" /></Link></label>
+                                {/*<label><Link to="existing-account"><Translate content="account.existing_accounts" /></Link></label>*/}
                             </form>
                         </div>
                     </div>

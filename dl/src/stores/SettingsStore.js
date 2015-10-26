@@ -2,8 +2,8 @@ var alt = require("../alt-instance");
 var SettingsActions = require("../actions/SettingsActions");
 
 var Immutable = require("immutable");
-const STORAGE_KEY = "__graphene__";
-const CORE_ASSET = "CORE";
+const STORAGE_KEY = "__muse__";
+const CORE_ASSET = "NOTE";
 
 var ls = typeof localStorage === "undefined" ? null : localStorage;
 
@@ -13,7 +13,7 @@ class SettingsStore {
 
         this.settings = Immutable.Map({
             locale: "en",
-            connection: "wss://bitshares.openledger.info/ws"
+            connection: "ws://52.6.149.0/ws"
         });
 
         this.viewSettings =  Immutable.Map({
@@ -21,17 +21,6 @@ class SettingsStore {
         });
 
         this.defaultMarkets = Immutable.Map([
-                                            /*
-            ["BTC_" + CORE_ASSET, {"quote":"BTC","base":CORE_ASSET}],
-            ["CNY_" + CORE_ASSET, {"quote":"CNY","base":CORE_ASSET}],
-            ["EUR_" + CORE_ASSET, {"quote":"EUR","base":CORE_ASSET}],
-            ["GOLD_" + CORE_ASSET, {"quote":"GOLD","base":CORE_ASSET}],
-            ["SILVER_" + CORE_ASSET, {"quote":"SILVER","base":CORE_ASSET}],
-            ["USD_" + CORE_ASSET, {"quote":"USD","base":CORE_ASSET}],
-            ["BTC_USD", {"quote":"BTC","base":"USD"}],
-            ["BTC_CNY", {"quote":"BTC","base":"CNY"}],
-            ["TRADE.BTC_" + CORE_ASSET, {"quote":"TRADE.BTC","base":CORE_ASSET} ]
-            */
         ]);
 
         // If you want a default value to be translated, add the translation to settings in locale-xx.js
@@ -47,8 +36,7 @@ class SettingsStore {
                 "tr"
             ],
             connection: [
-                "wss://bitshares.openledger.info/ws",
-                "ws://127.0.0.1:8090"
+                "ws://52.6.149.0/ws"
             ]
             // confirmMarketOrder: [
             //     {translate: "confirm_yes"},

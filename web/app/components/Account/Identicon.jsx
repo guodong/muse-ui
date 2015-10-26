@@ -21,7 +21,7 @@ class Identicon extends Component {
       let {height, width} = this.props.size;
       let hash = account ? sha256(account) : null;
       return (
-           <canvas id={this.canvas_id} ref="canvas" style={{height: height, width: width}} width={width * 2} height={height * 2} data-jdenticon-hash={hash} />
+           <canvas id={this.canvas_id} className={account ? "solid" : "empty"} ref="canvas" style={{height: height, width: width}} width={width * 2} height={height * 2} data-jdenticon-hash={hash} />
       );
   }
 
@@ -29,13 +29,14 @@ class Identicon extends Component {
       if(this.props.account) jdenticon.updateById(this.canvas_id);
       else {
           let ctx = React.findDOMNode(this.refs.canvas).getContext('2d');
-          ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+          var imageData = ctx.getImageData(0,0,2,2)
+          ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
           let size = ctx.canvas.width;
           ctx.clearRect(0, 0, size, size);
           ctx.fillRect(0, 0, size, size);
           ctx.clearRect(0+1, 0+1, size-2, size-2);
           ctx.font = `${size}px sans-serif`;
-          ctx.fillText("?", size/4, size - size/6);
+          ctx.fillText("?", size/4.5, size - size/7);
       }
   }
 

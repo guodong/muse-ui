@@ -86,7 +86,7 @@ class WalletActions {
             } catch(e) {}
             let port = (hostname === "localhost" || hostname.indexOf("192.168.") === 0) ? ":3000" : "";
             */
-            let create_account_promise = fetch("https://graphene.bitshares.org/api/v1/accounts", {
+            let create_account_promise = fetch("http://52.6.149.0/api/v1/accounts", {
                 method: 'post',
                 mode: 'cors',
                 headers: {
@@ -97,7 +97,8 @@ class WalletActions {
                     "account": {
                         "name": account_name,
                         "owner_key": owner_private.private_key.toPublicKey().toPublicKeyString(),
-                        "active_key": active_private.private_key.toPublicKey().toPublicKeyString()
+                        "active_key": active_private.private_key.toPublicKey().toPublicKeyString(),
+                        "memo_key": active_private.private_key.toPublicKey().toPublicKeyString()
                     }
                 })
             }).then(r => r.json());

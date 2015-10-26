@@ -105,13 +105,17 @@ class Transfer extends React.Component {
         let asset_types = [];
         let balance = null;
         if (this.state.from_account && !from_error) {
-            let account_balances = this.state.from_account.get("balances").toJS();
-            asset_types = Object.keys(account_balances);
-            if (asset_types.length > 0) {
-                let current_asset_id = this.state.asset ? this.state.asset.get("id") : asset_types[0];
-                balance = (<span><Translate component="span" content="transfer.available"/>: <BalanceComponent balance={account_balances[current_asset_id]}/></span>)
-            } else {
-                balance = "No funds";
+            let balances = this.state.from_account.get("balances");
+            if (balances) {
+                let account_balances = this.state.from_account.get("balances").toJS();
+                asset_types = Object.keys(account_balances);
+                if (asset_types.length > 0) {
+                    let current_asset_id = this.state.asset ? this.state.asset.get("id") : asset_types[0];
+                    balance = (<span><Translate component="span" content="transfer.available"/>: <BalanceComponent
+                        balance={account_balances[current_asset_id]}/></span>)
+                } else {
+                    balance = "No funds";
+                }
             }
         }
 
