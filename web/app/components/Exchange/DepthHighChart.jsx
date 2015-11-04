@@ -15,7 +15,9 @@ class DepthHighChart extends React.Component {
             nextProps.plotLine !== this.props.plotLine ||
             nextProps.feedPrice !== this.props.feedPrice ||
             nextProps.settlementPrice !== this.props.settlementPrice ||
-            nextProps.leftOrderBook !== this.props.leftOrderBook
+            nextProps.leftOrderBook !== this.props.leftOrderBook ||
+            nextProps.SQP !== this.props.SQP ||
+            nextProps.LCP !== this.props.LCP 
         );
     }
 
@@ -106,13 +108,12 @@ class DepthHighChart extends React.Component {
             },
             tooltip: {
                 shared: false,
-                crosshairs: [true, true],
                 backgroundColor: "rgba(0, 0, 0, 0.3)",
                 formatter: function() {
                     let name = this.series.name.split(" ")[0];
-                    return `<span style="font-size: 90%;">${utils.format_number(this.x / power, base.precision)} ${priceSymbol}</span><br/>
+                    return `<span style="font-size: 90%;">${utils.format_number(this.x / power, base.get("precision"))} ${priceSymbol}</span><br/>
                         <span style="color:${this.series.color}">\u25CF</span>
-                        ${name}: <b>${utils.format_number(this.y, base.precision)} ${quoteSymbol}</b>`;
+                        ${name}: <b>${utils.format_number(this.y, base.get("precision"))} ${quoteSymbol}</b>`;
                 },
                 style: {
                     color: "#FFFFFF"
@@ -132,7 +133,13 @@ class DepthHighChart extends React.Component {
                         color: "#FFFFFF"
                     }
                 },
-                gridLineWidth: 0
+                gridLineWidth: 0,
+                crosshair: {
+                    snap: false
+                },
+                currentPriceIndicator: {
+                    enabled: false
+                }
             },
             xAxis: {
                 labels: {
@@ -287,14 +294,14 @@ class DepthHighChart extends React.Component {
         // Add onClick event listener if defined
         if (this.props.onClick) {
             config.chart.events = {
-                click: this.props.onClick
+                click: this.props.onClick.bind(this, power)
             };
         }
 
         return (
             <div className="grid-content no-overflow middle-content">
-                <p className="bid-total">{utils.format_number(totalBids, base.precision)} {baseSymbol}</p>
-                <p className="ask-total">{utils.format_number(totalAsks, quote.precision)} {quoteSymbol}</p>
+                <p className="bid-total">{utils.format_number(totalBids, base.get("precision"))} {baseSymbol}</p>
+                <p className="ask-total">{utils.format_number(totalAsks, quote.get("precision"))} {quoteSymbol}</p>
                 {flatBids || flatAsks || flatCalls ? <Highstock config={config}/> : null}
             </div>
         );

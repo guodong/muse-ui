@@ -5,7 +5,7 @@ import Translate from "react-translate-component";
 import ChainTypes from "../Utility/ChainTypes";
 import BindToChainState from "../Utility/BindToChainState";
 import utils from "common/utils";
-
+import ChainStore from "api/ChainStore";
 
 @BindToChainState({show_loader: true})
 class MarketCard extends React.Component {
@@ -36,29 +36,8 @@ class MarketCard extends React.Component {
         let marketName = quote.get("symbol") + " : " + base.get("symbol");
         let dynamic_data = quote.get("dynamic");
         let base_dynamic_data = base.get("dynamic");
-        let rate, convert = {}, invert, decimals, basePrice, quotePrice;
-        if (quote.get("id") !== "1.3.0" && base.get("id") !== "1.3.0") {
-            rate = quote.getIn(["options", "core_exchange_rate"]);
-            basePrice = utils.get_asset_price(
-                base.getIn(["options", "core_exchange_rate", "quote", "amount"]),
-                this.props.core,
-                base.getIn(["options", "core_exchange_rate", "base", "amount"]),
-                base
-            );
 
-            convert.quoteAmount = utils.get_asset_precision(base.get("precision")) * rate.getIn(["quote", "amount"]) / utils.get_asset_precision(this.props.core.get("precision")) / basePrice;
-            convert.id = base.getIn(["options", "core_exchange_rate", "base", "asset_id"]);
-            invert = true;
-        } else if (quote.get("id") === "1.3.0") {
-            rate = base.getIn(["options", "core_exchange_rate"]);
-            invert = false;
-            convert = false;
-        } else {
-            rate = quote.getIn(["options", "core_exchange_rate"]);
-            invert = true;
-            decimals = 2;
-            convert = false;
-        }
+        let price = utils.convertPrice(quote, base);
 
         return (
             <div style={{padding: "0.5em 0.5em"}} className="grid-content account-card">
@@ -66,21 +45,19 @@ class MarketCard extends React.Component {
                         <div onClick={this._onClick.bind(this, marketID)}>
                             <div style={{padding: "5px"}}>
                             </div>
-                            <div style={{color: "black"}} className="card-divider text-center">
+                            <div className="card-divider text-center info">
                                 <span>{marketName}</span>
                             </div>
-                            <div className="card-section" style={{paddingBottom: 0}}>
+                            <div className="card-section">
                                 <ul >
                                     <li>
                                         <Translate content="markets.core_rate" />:&nbsp;
                                             <FormattedPrice
                                                 style={{fontWeight: "bold"}}
-                                                quote_amount={convert ? convert.quoteAmount : rate.getIn(["quote", "amount"])}
-                                                quote_asset={convert ? convert.id : rate.getIn(["quote", "asset_id"])}
-                                                base_amount={rate.getIn(["base", "amount"])}
-                                                base_asset={rate.getIn(["base", "asset_id"])}
-                                                invert={invert}
-                                                decimals={decimals}
+                                                quote_amount={price.quoteAmount}
+                                                quote_asset={quote.get("id")}
+                                                base_amount={price.baseAmount}
+                                                base_asset={base.get("id")}
                                             />
 
                                     </li>
@@ -99,7 +76,7 @@ class MarketCard extends React.Component {
                                 </ul>
                             </div>
                         </div>
-                    <span style={{marginBottom: "5px", marginRight: "5px",zIndex:999, backgroundColor: "#6A6A6A"}} onClick={this.props.removeMarket} className="badge float-right">-</span>
+                    <span style={{marginBottom: "6px", marginRight: "6px", zIndex:999,  }} onClick={this.props.removeMarket} className="text float-right remove">–</span>
                 </div>
             </div>
         );

@@ -141,7 +141,13 @@
         create_account: "Hesap aç",
         identicon: "Identicon",
         pay_from: "Buradan öde",
-        existing_accounts: "Mecvut Hesaplar"
+        existing_accounts: "Mecvut Hesaplar",
+        name_input: {
+            name_is_taken: "Account name is already taken.",
+            not_found: "Account not found.",
+            premium_name_faucet: "This is a premium name. Premium names are more expensive and can't be registered for free by faucet. Try to select another name containing at least one dash, number or no vowels.",
+            premium_name_warning: "This is a premium name that is more expensive to register. Regular names have at least one dash, number or no vowels."
+        }
     },
     pagination: {
         newer: "Daha yeni",
@@ -454,7 +460,8 @@
         wallets: "Cüzdanlar",
         connection: "API Bağlantısı",
         add_ws: "Yeni websocket API ekle",
-        remove_ws: "Websocket API kaldır"
+        remove_ws: "Websocket API kaldır",
+        faucet_address: "Faucet Address"
     },
     footer: {
         title: "Graphene",
@@ -599,5 +606,11 @@
         retry: "Yeniden dene",
         connected: "Bağlandı",
         not_connected: "Bağlanmadı"
-    }
+    },
+     refcode: {
+         claim: "Claim",
+         claim_refcode: "Claim Referral Code",
+         refcode_optional: "Referral Code (optional)",
+         enter_refcode: "Enter referral code"
+     }
 };

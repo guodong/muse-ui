@@ -15,6 +15,7 @@ import {saveAs} from "common/filesaver.js"
 import cname from "classnames"
 import hash from "common/hash"
 import Translate from "react-translate-component";
+import chain_config from "chain/config"
 
 class BackupBaseComponent extends Component {
     
@@ -247,7 +248,6 @@ class Download extends BackupBaseComponent {
             throw new Error("Invalid backup to download conversion")
         
         saveAs(blob, this.props.backup.name);
-        CachedPropertyActions.set("backup_recommended", false)
         WalletActions.setBackupDate()
     }
 }
@@ -272,7 +272,11 @@ class Create extends BackupBaseComponent {
     onCreateBackup() {
         var backup_pubkey = WalletDb.getWallet().password_pubkey
         backup(backup_pubkey).then( contents => {
-            var name = this.props.wallet.current_wallet + ".bin"
+            var name = this.props.wallet.current_wallet
+            var address_prefix = chain_config.address_prefix.toLowerCase()
+            if(name.indexOf(address_prefix) !== 0)
+                name = address_prefix + "_" + name
+            name = name + ".bin"
             BackupActions.incommingBuffer({name, contents})
         })
     }

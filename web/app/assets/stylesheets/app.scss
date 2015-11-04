@@ -17,6 +17,29 @@
 @import "./pagination";
 @import "./existing_accounts";
 
+
+#content.win32 {
+  font-size: 90%;
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.8rem;
+  }
+  h3 {
+    font-size: 1.6rem;
+  }
+  h4 {
+    font-size: 1.4rem;
+  }
+  h5 {
+    font-size: 1.2rem;
+  }
+  h6 {
+    font-size: 1.0rem;
+  }
+}
+
 a {
   transition: all 0.3s ease 0s;
 }
@@ -283,4 +306,14 @@ span.time {
 
 section > ul > li.key-value {
   padding: 0.5rem 1rem;
+}
+
+label.inline {
+  display: inline;
+}
+
+.blocks-row {
+  > div.grid-block {
+    padding-bottom: 0 !important;
+  }
 }

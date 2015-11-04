@@ -11,6 +11,7 @@ import Translate from "react-translate-component";
 import counterpart from "counterpart";
 import SettingsActions from "actions/SettingsActions";
 import classnames from "classnames";
+import PriceText from "../Utility/PriceText";
 
 class TableHeader extends React.Component {
 
@@ -33,10 +34,10 @@ class TableHeader extends React.Component {
             return (
                 <thead>
                     <tr>
-                        <th style={{textAlign: "right"}}><Translate content="exchange.price" /><br/>{baseSymbol ? <small>({baseSymbol}/{quoteSymbol})</small> : null}</th>
-                        <th style={{textAlign: "right"}}><Translate content="transfer.amount" /><br/>{baseSymbol ? <small>({quoteSymbol})</small> : null}</th>
-                        <th style={{textAlign: "right"}}><Translate content="exchange.value" /><br/>{baseSymbol ? <small>({baseSymbol})</small> : null}</th>
-                        <th style={{textAlign: "right"}}><Translate content="transaction.expiration" /></th>
+                        <th style={{textAlign: "right"}}><Translate content="exchange.price" /><br/>{baseSymbol ? <span className="header-sub-title">({baseSymbol}/{quoteSymbol})</span> : null}</th>
+                        <th style={{textAlign: "right"}}><Translate content="transfer.amount" /><br/>{baseSymbol ? <span className="header-sub-title">({quoteSymbol})</span> : null}</th>
+                        <th style={{textAlign: "right"}}><Translate content="exchange.value" /><br/>{baseSymbol ? <span className="header-sub-title">({baseSymbol})</span> : null}</th>
+                        <th style={{textAlign: "right"}}><Translate content="transaction.expiration" /><br/><span style={{visibility: "hidden"}} className="header-sub-title">d</span></th>
                         <th style={{textAlign: "right"}}></th>
                     </tr>
                 </thead>
@@ -65,9 +66,9 @@ class OrderRow extends React.Component {
         let isAskOrder = market_utils.isAsk(order, base);
         let tdClass = classNames({orderHistoryBid: !isAskOrder, orderHistoryAsk: isAskOrder});
 
-        let priceSymbol = showSymbols ? <span>{` ${base.symbol}/${quote.symbol}`}</span> : null;
-        let valueSymbol = showSymbols ? " " + quote.symbol : null;
-        let amountSymbol = showSymbols ? " " + base.symbol : null;
+        let priceSymbol = showSymbols ? <span>{` ${base.get("symbol")}/${quote.get("symbol")}`}</span> : null;
+        let valueSymbol = showSymbols ? " " + quote.get("symbol") : null;
+        let amountSymbol = showSymbols ? " " + base.get("symbol") : null;
 
         // if (!isAskOrder && !invert) {
 
@@ -84,8 +85,8 @@ class OrderRow extends React.Component {
         //                 format="short"
         //                 />
         //             </td>
-        //             <td>{utils.format_number(value, quote.precision)} {valueSymbol}</td>
-        //             <td>{utils.format_number(amount, base.precision)} {amountSymbol}</td>
+        //             <td>{utils.format_number(value, quote.get("precision"))} {valueSymbol}</td>
+        //             <td>{utils.format_number(amount, base.get("precision"))} {amountSymbol}</td>
         //             <td className={tdClass}>
         //                 <span className="price-integer">{price.int}</span>
         //                 .
@@ -98,13 +99,11 @@ class OrderRow extends React.Component {
             return (
                 <tr key={order.id}>
                     <td className={tdClass}>
-                        <span className="price-integer">{price.int}</span>
-                        .
-                        <span className="price-decimal">{price.dec}</span>
+                        <PriceText preFormattedPrice={price} />
                         {priceSymbol}
                     </td>
-                    <td>{utils.format_number(amount, base.precision)} {amountSymbol}</td>
-                    <td>{utils.format_number(value, quote.precision)} {valueSymbol}</td>
+                    <td>{utils.format_number(amount, base.get("precision"))} {amountSymbol}</td>
+                    <td>{utils.format_number(value, quote.get("precision"))} {valueSymbol}</td>
                     <td><FormattedDate
                         value={order.expiration}
                         formats={intlData.formats}
@@ -164,7 +163,7 @@ class MyOpenOrders extends React.Component {
             let cancel = counterpart.translate("account.perm.cancel");
 
             bids = orders.filter(a => {
-                return (a.seller === currentAccount && a.sell_price.quote.asset_id !== base.id);
+                return (a.seller === currentAccount && a.sell_price.quote.asset_id !== base.get("id"));
             }).sort((a, b) => {
                 let {price: a_price} = market_utils.parseOrder(a, base, quote);
                 let {price: b_price} = market_utils.parseOrder(b, base, quote);
@@ -176,7 +175,7 @@ class MyOpenOrders extends React.Component {
             }).toArray();
 
             asks = orders.filter(a => {
-                return (a.seller === currentAccount && a.sell_price.quote.asset_id === base.id);
+                return (a.seller === currentAccount && a.sell_price.quote.asset_id === base.get("id"));
             }).sort((a, b) => {
                 let {price: a_price} = market_utils.parseOrder(a, base, quote);
                 let {price: b_price} = market_utils.parseOrder(b, base, quote);

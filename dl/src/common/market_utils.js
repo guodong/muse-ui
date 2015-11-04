@@ -151,18 +151,15 @@ class MarketUtils {
         if (typeof buy.amount !== "number") {
             buy.amount = parseInt(buy.amount, 10);
         }
-        let price = callPrice ? {full: callPrice} : {
-            full: (sell.amount / basePrecision) / (buy.amount / quotePrecision)
-        };
-        // if (invert) {
-        //     price.full = 1 / price.full;
-        // }
+        let fullPrice = callPrice ? callPrice : (sell.amount / basePrecision) / (buy.amount / quotePrecision)
+        let price = utils.price_to_text(fullPrice, quote, base);
+
         let amount, value;
 
         // We need to figure out a better way to set the number of decimals
-        let price_split = utils.format_number(price.full, Math.max(5, pricePrecision)).split(".");
-        price.int = price_split[0];
-        price.dec = price_split[1];
+        // let price_split = utils.format_number(price.full, Math.max(5, pricePrecision)).split(".");
+        // price.int = price_split[0];
+        // price.dec = price_split[1];
 
         if (order.debt) {
             if (invert) {
@@ -198,6 +195,55 @@ class MarketUtils {
             price: price,
             amount: amount
         };
+    }
+
+    static parse_order_history(order, paysAsset, receivesAsset, isAsk, flipped) {
+        let isCall = order.order_id.split(".")[1] == object_type.limit_order ? false : true;
+        let receivePrecision = utils.get_asset_precision(receivesAsset.get("precision"));
+        let payPrecision = utils.get_asset_precision(paysAsset.get("precision"));
+
+        let receives = order.receives.amount / receivePrecision;
+        receives = utils.format_number(receives, receivesAsset.get("precision") - 1);
+        let pays = order.pays.amount / payPrecision;
+        pays = utils.format_number(pays, paysAsset.get("precision") - 1);
+        let price_full = utils.get_asset_price(order.receives.amount, receivesAsset, order.pays.amount, paysAsset, isAsk);
+        // price_full = !flipped ? (1 / price_full) : price_full;
+        // let {int, dec} = this.split_price(price_full, isAsk ? receivesAsset.get("precision") : paysAsset.get("precision"));
+        let {int, dec, trailing} = utils.price_to_text(price_full, isAsk ? receivesAsset : paysAsset, isAsk ? paysAsset : receivesAsset);
+        let className = isCall ? "orderHistoryCall" : isAsk ? "orderHistoryBid" : "orderHistoryAsk";
+        let time = order.time.split("T")[1];
+        let now = new Date();
+        let offset = now.getTimezoneOffset() / 60;
+        let hour = time.substr(0, 2);
+        let hourNumber = parseInt(hour, 10);
+        let localHour = hourNumber - offset
+        if (localHour >= 24) {
+            localHour -= 24;            
+        }
+        let hourString = localHour.toString();
+        if (parseInt(hourString, 10) < 10) {
+            hourString = "0" + hourString;
+        }
+        time = time.replace(hour, hourString);
+
+        return {
+            receives: isAsk ? receives : pays,
+            pays : isAsk ? pays : receives,
+            full: price_full,
+            int : int,
+            dec: dec,
+            trailing: trailing,
+            className: className,
+            time: time
+        };
+    }
+
+    static split_price(price, pricePrecision) {
+        // We need to figure out a better way to set the number of decimals
+        let price_split = utils.format_number(price, Math.max(5, pricePrecision)).split(".");
+        let int = price_split[0];
+        let dec = price_split[1];
+        return {int: int, dec: dec};
     }
 
     static flatten_orderbookchart(array, sumBoolean, inverse, precision) {

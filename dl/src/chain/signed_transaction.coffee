@@ -123,7 +123,7 @@ _my.signed_transaction = ->
         throw new Error "not finalized" unless @tr_buffer
         throw new Error "already signed" if @signed
         unless @signer_private_keys.length
-            throw new Error "call add_signer first"
+            throw new Error "Transaction was not signed. Do you have a private key? [no_signers]"
         for i in [0...@signer_private_keys.length] by 1
             [private_key, public_key] = @signer_private_keys[i]
             sig = Signature.signBuffer(
@@ -131,7 +131,6 @@ _my.signed_transaction = ->
                 private_key
                 public_key
             )
-            console.log "INFO: Signed #{i} of #{@signer_private_keys.length}" if i % 10 == 0
             @signatures.push sig.toBuffer()
         @signer_private_keys = []
         @signed = true

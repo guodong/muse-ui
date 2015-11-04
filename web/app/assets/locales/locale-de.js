@@ -140,7 +140,13 @@ module.exports = {
         create_account: "Konto erstellen",
         identicon: "Identicon",
         pay_from: "Bezahlen von",
-        existing_accounts: "Existierendes Konto"
+        existing_accounts: "Existierendes Konto",
+        name_input: {
+            name_is_taken: "Account name is already taken.",
+            not_found: "Account not found.",
+            premium_name_faucet: "This is a premium name. Premium names are more expensive and can't be registered for free by faucet. Try to select another name containing at least one dash, number or no vowels.",
+            premium_name_warning: "This is a premium name that is more expensive to register. Regular names have at least one dash, number or no vowels."
+        }
     },
     pagination: {
         newer: "Jüngere",
@@ -452,7 +458,8 @@ module.exports = {
         wallets: "Geldbörsen",
         connection: "API Anbindung",
         add_ws: "Websocket API hinzufügen",
-        remove_ws: "Websocket API entfernen"
+        remove_ws: "Websocket API entfernen",
+        faucet_address: "Faucet Address"
     },
     footer: {
         title: "Graphene",
@@ -471,12 +478,11 @@ module.exports = {
         price: "Preis",
         latest: "Letzer Preis",
         call: "Call Preis",
-        volume: "Volumen",
+        core_rate: "Gebührenrate",
         settle: "Settlement Preis",
         squeeze: "Margin Call Preis",
         maintenance: "Maintenance Call Preis",
         your_price: "Ihr Call Preis",
-        volume: "Volumen",
         spread: "Spread",
         quantity: "Quantität",
         buy: "Kaufen",
@@ -505,13 +511,11 @@ module.exports = {
         change_wallet: "Geldbörse wechseln",
         wallet_created: "Gerldbörse erstellt",
         create_wallet: "Gerldbörse erstellen",
-        delete_wallet: "Gerldbörse löschen",
-        delete_confirm_line1: "Sind Sie sich ABSOLUT sicher?",
+        import_bts1: "Importieren aus BitShares 0.9.3c",
+        setup_wallet: "Gelbörse einrichten",
         delete_confirm_line2: "Unerwartete schlechte Dinge werden passieren, sollten Sie das hier nicht lesen!",
-        delete_confirm_line3: "Diese Aktion kann NICHT rückgängig gemacht werden.",
-        delete_wallet_name: "Gelbörse (%(name)s) löschen",
         delete_confirm_line3: "Diese Aktion kan NICHT rückgängig gemacht werden!",
-        delete_wallet_name: "Lösche Geldbörse (%(name)s)",
+        delete_wallet_name: "Gelbörse (%(name)s) löschen",
         balance_claims: "Eingeforderte Guthaben",
         download: "Download",
         name: "Name der Geldbörse",
@@ -597,5 +601,11 @@ module.exports = {
         retry: "nocheinmal versuchen",
         connected: "verbunden",
         not_connected: "Nicht verbunden"
+    },
+    refcode: {
+        claim: "Claim",
+        claim_refcode: "Claim Referral Code",
+        refcode_optional: "Referral Code (optional)",
+        enter_refcode: "Enter referral code"
     }
 };

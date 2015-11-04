@@ -44,6 +44,8 @@ class AccountMembership extends React.Component {
         let reg = ChainStore.getAccount( account.registrar );
         if( reg ) account.registrar_name = reg.get('name');
 
+        let cvb = account.cashback_vb ? ChainStore.getObject( account.cashback_vb ) : null;
+
         let account_name = account.name;
 
         let network_fee  = account.network_fee_percentage/100;
@@ -71,7 +73,7 @@ class AccountMembership extends React.Component {
         let annual_cost = gprops.parameters.current_fees.parameters[8][1].membership_annual_fee*gprops.parameters.current_fees.scale/10000;
 
         return (
-            <div className="grid-content">
+            <div className="grid-content" style={{overflowX: "hidden"}}>
                 <div className="content-block">
                     <h3><Translate content={membership}/> {expiration}</h3>
                     { member_status=== "lifetime" ? null : (
@@ -121,11 +123,20 @@ class AccountMembership extends React.Component {
                                     </td>
                                     <td>{referrer_fee}%</td>
                                 </tr>
-                                <Statistics stat_object={account.statistics}/>
                                 <tr>
                                     <td><Translate content="account.member.membership_expiration"/> </td>
                                     <td>{expiration_date}</td>
                                 </tr>
+                            </table>
+
+                            <h4 style={{paddingTop: "1rem"}}><Translate content="account.member.fees_cashback"/></h4>
+                            <table className="table key-value-table">                                
+                                <Statistics stat_object={account.statistics}/>
+                                {cvb ? (
+                                    <tr>
+                                        <td><Translate content="account.member.cashback"/> </td>
+                                        <td><FormattedAsset amount={cvb.getIn(["balance", "amount"])} asset={cvb.getIn(["balance", "asset_id"])} /></td>
+                                    </tr>) : null}
                             </table>
                         </div>
                     </div>

@@ -13,7 +13,8 @@ class SettingsStore {
 
         this.settings = Immutable.Map({
             locale: "en",
-            connection: "ws://52.6.149.0/ws"
+            connection: "ws://52.6.149.0/ws",
+            faucet_address: "http://52.6.149.0"
         });
 
         this.viewSettings =  Immutable.Map({
@@ -53,8 +54,8 @@ class SettingsStore {
             onRemoveWS: SettingsActions.removeWS
         });
 
-        if (this._lsGet("settings_v1")) {
-            this.settings = Immutable.Map(JSON.parse(this._lsGet("settings_v1")));
+        if (this._lsGet("settings_v2")) {
+            this.settings = Immutable.Map(JSON.parse(this._lsGet("settings_v2")));
         }
 
         if (this._lsGet("defaultMarkets")) {
@@ -80,7 +81,7 @@ class SettingsStore {
             payload.value
         );
 
-        this._lsSet("settings_v1", this.settings.toJS());
+        this._lsSet("settings_v2", this.settings.toJS());
     }
 
     onChangeViewSetting(payload) {

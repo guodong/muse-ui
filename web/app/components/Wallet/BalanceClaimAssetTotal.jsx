@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from "react";
 import connectToStores from "alt/utils/connectToStores"
 import BalanceClaimActiveStore from "stores/BalanceClaimActiveStore"
-
 import FormattedAsset from "components/Utility/FormattedAsset";
+import Translate from "react-translate-component";
 
 @connectToStores
 export default class BalanceClaimAssetTotals extends Component {
@@ -18,12 +18,15 @@ export default class BalanceClaimAssetTotals extends Component {
     
     render() {
         
+        if( this.props.balances === undefined )
+            return <div><Translate content="wallet.loading_balances"/>&hellip;</div>
+        
         var total_by_asset = this.props.balances
             .groupBy( v => v.balance.asset_id )
             .map( l => l.reduce( (r,v) => r + Number(v.balance.amount), 0 ))
 
         if( ! total_by_asset.size)
-            return <div>No Balances</div>
+            return <div>None</div>
         
         return <div>
             {total_by_asset.map( (total, asset_id) =>

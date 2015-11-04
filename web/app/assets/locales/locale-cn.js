@@ -142,7 +142,13 @@ module.exports = {
         identicon: "身份标示图形",
         pay_from: "注册费支付账户",
         existing_accounts: "已有账户",
-        bts_market: "交易市场"
+        bts_market: "交易市场",
+        name_input: {
+            name_is_taken: "Account name is already taken.",
+            not_found: "Account not found.",
+            premium_name_faucet: "This is a premium name. Premium names are more expensive and can't be registered for free by faucet. Try to select another name containing at least one dash, number or no vowels.",
+            premium_name_warning: "This is a premium name that is more expensive to register. Regular names have at least one dash, number or no vowels."
+        }
     },
     transfer: {
         from: "来自",
@@ -452,7 +458,8 @@ module.exports = {
         wallets: "钱包管理",
         connection: "API 服务器设定",
         add_ws: "添加新的 websocket API",
-        remove_ws: "删除 websocket API"
+        remove_ws: "删除 websocket API",
+        faucet_address: "Faucet Address"
     },
     pagination: {
         newer: "更近",
@@ -489,7 +496,10 @@ module.exports = {
         your_price: "你的强平触发价",
         receive: "获得",
         vertical: "垂直布局",
-        horizontal: "水平布局"
+        horizontal: "水平布局",
+        market_name: "市场名称",
+        quote_supply: "报价资产供给量",
+        base_supply: "基础资产供给量"
     },
     markets: {
         choose_base: "选择基准资产",
@@ -569,7 +579,9 @@ module.exports = {
         never_backed_up: "钱包尚未进行过备份",
         need_backup: "钱包需要备份",
         noneed_backup: "无需备份",
-        import_bts1: "从BitShares 0.9.3c导入"
+        import_bts1: "从BitShares 0.9.3c导入",
+        import_keys_tool: "私钥导入工具",
+        balance_claim_lookup: "查询余额"
     },
     borrow: {
         title: "%(asset_symbol)s 保证金头寸",
@@ -605,5 +617,11 @@ module.exports = {
         retry: "重试",
         connected: "已连接",
         not_connected: "未连接"
+    },
+    refcode: {
+        claim: "Claim",
+        claim_refcode: "Claim Referral Code",
+        refcode_optional: "Referral Code (optional)",
+        enter_refcode: "Enter referral code"
     }
 };

@@ -5,8 +5,7 @@ module.exports =
     Account names may contain one or more names separated by a dot.
     Each name needs to start with a letter and may contain
     numbers, or well placed dashes.
-    
-    @see graphene/libraries/chain/protocol/account.cpp is_valid_name
+    @see is_valid_name graphene/libraries/chain/protocol/account.cpp
     ###
     is_account_name: (value, allow_too_short = false)->
         return no if is_empty value
@@ -40,9 +39,8 @@ module.exports =
         return null
     
     is_cheap_name: (account_name)->
-        /[0-9]/.test(account_name) or
-        not /[aeiouy]/.test(account_name) or
-        /-/.test(account_name)
+        /[0-9-]/.test(account_name) or
+        not /[aeiouy]/.test(account_name)
     
     is_empty_user_input: (value)->
         return yes if is_empty value
@@ -54,6 +52,7 @@ module.exports =
             throw new Error "value required for #{field_name}: #{value}"
         value
 
+    ###* @see is_valid_symbol graphene/libraries/chain/protocol/asset_ops.cpp ###
     is_valid_symbol_error: (value) ->
         suffix = "Asset name should "
         return suffix + "not be empty." if is_empty value
@@ -62,7 +61,6 @@ module.exports =
         return suffix + "be shorter." if value.length > 16
         return suffix + "start with a letter" unless /^[A-Z]/.test value
         return suffix + "end with a letter" unless /[A-Z]$/.test value
-        #return "not start with BIT." if /^BIT/.test value # scam_pattern
         return suffix + "contain only letters numbers and perhaps a dot." if /^[A-Z0-9\.]$/.test value
         return null
 

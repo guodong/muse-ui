@@ -13,14 +13,15 @@
         title: "Muse UI",
         account: "Account",
         dashboard: "Dashboard",
-        explorer: "Explorer",
-        exchange: "Exchange",
+        explorer: "Explore",
+        exchange: "Trade",
         payments: "Transfer", // temporary, once we have tabs on Payments, I'll change it back to payments (Valentine)
         logout: "Logout",
         settings: "Settings",
         current: "Current Account",
         create_account: "Create Account",
         create_asset: "Create Asset",
+        update_asset: "Update Asset",
         lock: "Lock",
         unlock: "Unlock",
         help: "Help",
@@ -53,7 +54,7 @@
             fees_vested: "Pending vested fees",
             referrals: "Referrals",
             rewards: "Cashback Rewards",
-            cashback: "Cashback",
+            cashback: "Vesting cashback balance",
             vested: "Vested",
             unknown: "Unknown member",
             lifetime: "Lifetime member",
@@ -62,7 +63,8 @@
             upgrade_lifetime: "Buy Lifetime Subscribtion",
             subscribe: "Buy Annual Subscription",
             expires: "expires",
-            membership_expiration: "Membership Expiration"
+            membership_expiration: "Membership Expiration",
+            fees_cashback: "Fees and cashback"
         },
         user_issued_assets: {
             symbol: "Symbol",
@@ -71,7 +73,20 @@
             max_supply: "Maximum supply",
             precision: "Precision",
             to: "Issue to account",
-            details: "Details"
+            market_fee: "Market fee",
+            max_market_fee: "Max market fee",
+            details: "Details",
+            primary: "Primary settings",
+            optional: "Optional settings",
+            approx_fee: "Approximate fee",
+            exists: "That asset already exists",
+            max_positive: "Max supply should be a positive number",
+            core_exchange_rate: "Core exchange rate",
+            quote: "Quote asset amount",
+            base: "Base asset amount",
+            update_owner: "Update owner",
+            current_issuer: "Current owner account",
+            new_issuer: "New owner account"
         },
         connections: {
             known: "Known by",
@@ -94,8 +109,11 @@
             memo_public_key: "Memo Public Key"
         },
         votes: {
+            proxy_short: "Proxy",
+            workers_short: "Workers",            
             proxy: "Proxy Voting Account",
             no_proxy: "No Proxy",
+            clear_proxy: "Remove proxy",
             name: "Name",
             info: "Info",
             votes: "Votes",
@@ -110,7 +128,19 @@
             add_committee_label: "Committee Member",
             add_witness_label: "Witness",
             approve_worker: "Approve worker proposal",
-            reject_worker: "Reject worker proposal"
+            reject_worker: "Reject worker proposal",
+            worker_account: "Worker account",
+            total_votes: "Total votes",
+            votes_against: "Votes against",
+            daily_pay: "Daily pay",
+            max_pay: "Maximum total pay",
+            unclaimed: "Unclaimed pay",
+            status: {
+                title: "Status",
+                supported: "Supported",
+                rejected: "Rejected",
+                neutral: "Neutral"
+            }
         },
         options: {
             num_witnesses: "Desired Witnesses",
@@ -141,7 +171,13 @@
         create_account: "Create account",
         identicon: "Identicon",
         pay_from: "Pay From",
-        existing_accounts: "Existing Accounts"
+        existing_accounts: "Existing Accounts",
+        name_input: {
+            name_is_taken: "Account name is already taken.",
+            not_found: "Account not found.",
+            premium_name_faucet: "This is a premium name. Premium names are more expensive and can't be registered for free by faucet. Try to select another name containing at least one dash, number or no vowels.",
+            premium_name_warning: "This is a premium name that is more expensive to register. Regular names have at least one dash, number or no vowels."
+        }
     },
     pagination: {
         newer: "Newer",
@@ -213,7 +249,7 @@
         update_feed_producers: "pdated the feed producers of asset",
         feed_producer: "Became a feed producer for the asset",
         feed_price: "Feed price",
-        asset_issue: "Issued",
+        asset_issue: "issued",
         was_issued: "Was issued",
         by: "by",
         burn_asset: "Burnt",
@@ -259,6 +295,11 @@
         delta_debt: "Debt change",
         new_url: "Website",
         publisher: "Publisher",
+        market_fee: "Market fee",
+        max_market_fee: "Maximum market fee",
+        blinding_factor: "Blinding factor",
+        outputs: "Outputs",
+        inputs: "Inputs",
         trxTypes: {
             transfer: "Transfer",
             limit_order_create: "Place order",
@@ -298,7 +339,10 @@
             custom: "Custom",
             assert: "Assert operation",
             balance_claim: "Claim balance",
-            override_transfer: "Override transfer"
+            override_transfer: "Override transfer",
+            transfer_to_blind: "Transfer to blinded account",
+            blind_transfer: "Blinded transfer",
+            transfer_from_blind: "Transfer from blinded account"
         }
     },
     explorer: {
@@ -454,7 +498,8 @@
         wallets: "Wallets",
         connection: "API Connection",
         add_ws: "Add new websocket API",
-        remove_ws: "Remove websocket API"
+        remove_ws: "Remove websocket API",
+        faucet_address: "Faucet Address"
     },
     footer: {
         title: "Muse",
@@ -487,9 +532,14 @@
         vertical: "Vertical",
         horizontal: "Horizontal",
         confirm_buy: "Confirm order: Buy %(buy_amount)s %(buy_symbol)s at a price of %(price_amount)s %(price_symbol)s",
-        confirm_sell: "Confirm order: Sell %(sell_amount)s %(sell_symbol)s at a price of %(price_amount)s %(price_symbol)s"
+        confirm_sell: "Confirm order: Sell %(sell_amount)s %(sell_symbol)s at a price of %(price_amount)s %(price_symbol)s",
+        market_name: "Market name",
+        quote_supply: "Quote supply",
+        base_supply: "Base supply",
+        more: "More markets"
     },
     markets: {
+        title: "Markets",
         base: "Base asset",
         market_search: "Market Search",
         filter: "Filter",
@@ -601,5 +651,11 @@
         retry: "Retry",
         connected: "Connected",
         not_connected: "Not connected"
+    },
+    refcode: {
+        claim: "Claim",
+        claim_refcode: "Claim Referral Code",
+        refcode_optional: "Referral Code (optional)",
+        enter_refcode: "Enter referral code"
     }
 };
