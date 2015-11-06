@@ -402,7 +402,7 @@ export default class ImportKeys extends Component {
             pubkey = config.address_prefix + pubkey.substring(3)
             var address = PublicKey.fromPublicKeyString(pubkey).toAddressString()
             var addresses = account_addresses[account_name] || []
-            address = "BTS" + address.substring(3)
+            address = "BTS" + address.substring( config.address_prefix.length )
             //DEBUG console.log("... address",address,account_name)
             addresses.push(address)
             account_addresses[account_name] = addresses
