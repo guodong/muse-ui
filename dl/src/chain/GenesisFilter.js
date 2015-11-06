@@ -4,13 +4,13 @@ import key_utils from "common/key_utils"
 
 var bts_genesiskeys_bloom_url = undefined
 try {
-    var url = require("file?name=bts_genesiskeys_bloom_[sha1:hash:hex:7].dat!assets/bts_genesiskeys_bloom.dat")
-    if(url.indexOf("3cee441") === -1)
-        throw new Error("Incorrect hash: bts_genesiskeys_bloom.dat")
+    var url = require("file?name=muse_genesiskeys_bloom_[sha1:hash:hex:7].dat!assets/muse_genesiskeys_bloom.dat")
+    if(url.indexOf("9d1dd87") === -1)
+        throw new Error("Incorrect hash: muse_genesiskeys_bloom.dat")
     bts_genesiskeys_bloom_url = url
 } catch(e) {
     // webpack deployment exception (not run time)
-    console.log("WARN: Will be unable to filter BTS 1.0 wallet imports, did not find assets/bts_genesiskeys_bloom.dat", e)
+    console.log("WARN: Will be unable to filter BTS 1.0 wallet imports, did not find assets/muse_genesiskeys_bloom.dat", e)
 }
 
 /**
@@ -45,7 +45,7 @@ export default class GenesisFilter {
             var reader = new FileReader
             reader.onload = evt => {
                 var contents = new Buffer(evt.target.result, 'binary')
-                if( contents.length !== 1048576) throw new Error("Wrong length")
+                if( contents.length !== 524288) throw new Error("Wrong length")
                 this.bits_in_filter = contents.length * 8 // 8388608 (test data)
                 this.bloom_buffer = contents
                 done()
@@ -105,9 +105,10 @@ export default class GenesisFilter {
                             return
                         }
                         var key = keys.public_keys[k]
-                        if( /^GPH/.test(key) ) key = "BTS" + key.substring(3)
+                        if( /^BTS/.test(key) ) key = "MUSE" + key.substring(3)
+                        else if( /^GPH/.test(key) ) key = "MUSE" + key.substring(3)
                         if(this.inGenesis( key )) continue
-                        var addresses = key_utils.addresses(key, 'BTS')
+                        var addresses = key_utils.addresses(key, 'MUSE')
                         var addy_found = false
                         for(var i = 0; i < addresses.length; i++) {
                             if(this.inGenesis( addresses[i] )) {
