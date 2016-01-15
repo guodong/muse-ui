@@ -13,6 +13,7 @@ import alt from "alt-instance"
 import iDB from "idb-instance"
 import Immutable from "immutable"
 import config from "chain/config"
+import SettingsStore from "stores/SettingsStore"
 
 var application_api = new ApplicationApi()
 //var fetch = require('node-fetch')
@@ -29,6 +30,7 @@ class WalletActions {
         If <b>wallet_name</b> does not exist, provide a <b>create_wallet_password</b>.
     */
     setWallet(wallet_name, create_wallet_password, brnkey) {
+        WalletUnlockActions.lock()
         if( ! wallet_name) wallet_name = "default"
         return new Promise( resolve => {
             this.dispatch({wallet_name, create_wallet_password, brnkey, resolve})
@@ -44,7 +46,7 @@ class WalletActions {
         this.dispatch()
     }
     
-    createAccount( account_name, registrar, referrer, referrer_percent = 100 ) {
+    createAccount( account_name, registrar, referrer, referrer_percent, refcode ) {
         if( WalletDb.isLocked()) {
             var error = "wallet locked"
             //this.actions.brainKeyAccountCreateError( error )
@@ -52,10 +54,12 @@ class WalletActions {
         }
         var owner_private = WalletDb.generateNextKey()
         var active_private = WalletDb.generateNextKey()
+        //var memo_private = WalletDb.generateNextKey()
         var updateWallet = ()=> {
             var transaction = WalletDb.transaction_update_keys()
             var p = WalletDb.saveKeys(
-                [ owner_private, active_private ],
+                [ owner_private, active_private],
+                //[ owner_private, active_private, memo_private ],
                 transaction
             )
             return p.catch( error => transaction.abort() )
@@ -78,15 +82,7 @@ class WalletActions {
             return create_account();
         } else {
             // using faucet
-          /*
-            let hostname = "localhost", protocol;
-            try {
-                hostname = window.location.hostname;
-                protocol = window.location.protocol === "https:" ? "https://" : "http://";
-            } catch(e) {}
-            let port = (hostname === "localhost" || hostname.indexOf("192.168.") === 0) ? ":3000" : "";
-            */
-            let create_account_promise = fetch("https://graphene.bitshares.org/api/v1/accounts", {
+            let create_account_promise = fetch(SettingsStore.getSetting("faucet_address") + "/api/v1/accounts", {
                 method: 'post',
                 mode: 'cors',
                 headers: {
@@ -97,7 +93,11 @@ class WalletActions {
                     "account": {
                         "name": account_name,
                         "owner_key": owner_private.private_key.toPublicKey().toPublicKeyString(),
-                        "active_key": active_private.private_key.toPublicKey().toPublicKeyString()
+                        "active_key": active_private.private_key.toPublicKey().toPublicKeyString(),
+                        "memo_key": active_private.private_key.toPublicKey().toPublicKeyString(),
+                        //"memo_key": memo_private.private_key.toPublicKey().toPublicKeyString(),
+                        "refcode": refcode,
+                        "referrer": window && window.BTSW ? BTSW.referrer : ""
                     }
                 })
             }).then(r => r.json());
@@ -118,6 +118,34 @@ class WalletActions {
                 throw error;
             })
         }
+    }
+
+    claimVestingBalance(account, cvb) {
+        var tr = new ops.signed_transaction();
+
+        let balance = cvb.getIn(["balance", "amount"]),
+            earned = cvb.getIn(["policy", 1, "coin_seconds_earned"]),
+            vestingPeriod = cvb.getIn(["policy", 1, "vesting_seconds"]),
+            availablePercent = earned / (vestingPeriod * balance);
+
+
+        tr.add_type_operation("vesting_balance_withdraw", {
+            fee: { amount: "0", asset_id: "1.3.0"},
+            owner: account,
+            vesting_balance: cvb.get("id"),
+            amount: {
+                amount: Math.floor(balance * availablePercent),
+                asset_id: cvb.getIn(["balance", "asset_id"])
+            }
+        });
+
+        return WalletDb.process_transaction(tr, null, true)
+        .then(result => {
+            
+        })
+        .catch(err => {
+            console.log("vesting_balance_withdraw err:", err);
+        })
     }
     
     /** @parm balances is an array of balance objects with two
@@ -186,7 +214,7 @@ class WalletActions {
                 }
                 // With a lot of balance claims the signing can take so Long
                 // the transaction will expire.  This will increase the timeout...
-                tr.set_expire_seconds(config.expire_in_secs + balance_claims.length)
+                tr.set_expire_seconds( (15 * 60) + balance_claims.length)
                 
                 return WalletDb.process_transaction(
                     tr, Object.keys(signer_pubkeys), broadcast ).then(
@@ -197,4 +225,4 @@ class WalletActions {
     }
 }
 
-module.exports = alt.createActions(WalletActions)
+export default alt.createActions(WalletActions)

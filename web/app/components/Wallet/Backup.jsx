@@ -15,6 +15,7 @@ import {saveAs} from "common/filesaver.js"
 import cname from "classnames"
 import hash from "common/hash"
 import Translate from "react-translate-component";
+import chain_config from "chain/config"
 
 class BackupBaseComponent extends Component {
     
@@ -101,7 +102,7 @@ export class BackupRestore extends BackupBaseComponent {
         return <span>
 
             <h3><Translate content="wallet.import_backup" /></h3>
-
+            {(new FileReader).readAsBinaryString ? null : <p className="error">Warning! You browser doesn't support some some file operations required to restore backup, we recommend you to use Chrome or Firefox browsers to restore your backup.</p>}
             <Upload>
                 <NameSizeModified/>
                 <DecryptBackup saveWalletObject={true}>
@@ -247,7 +248,6 @@ class Download extends BackupBaseComponent {
             throw new Error("Invalid backup to download conversion")
         
         saveAs(blob, this.props.backup.name);
-        CachedPropertyActions.set("backup_recommended", false)
         WalletActions.setBackupDate()
     }
 }
@@ -272,7 +272,11 @@ class Create extends BackupBaseComponent {
     onCreateBackup() {
         var backup_pubkey = WalletDb.getWallet().password_pubkey
         backup(backup_pubkey).then( contents => {
-            var name = this.props.wallet.current_wallet + ".bin"
+            var name = this.props.wallet.current_wallet
+            var address_prefix = chain_config.address_prefix.toLowerCase()
+            if(name.indexOf(address_prefix) !== 0)
+                name = address_prefix + "_" + name
+            name = name + ".bin"
             BackupActions.incommingBuffer({name, contents})
         })
     }
@@ -293,8 +297,8 @@ class LastBackupDate extends Component {
                 <h4 className="success"><Translate content="wallet.noneed_backup" /></h4>
         }
         return <span>
-            <p>{backup_time}</p>
-            <p>{needs_backup}</p>
+            {backup_time}
+            {needs_backup}
         </span>
     }
 }
@@ -422,6 +426,5 @@ class Reset extends BackupBaseComponent {
     onReset() {
         BackupActions.reset()
         window.history.back()
-        // this.context.router.transitionTo("backup")
     }
 }

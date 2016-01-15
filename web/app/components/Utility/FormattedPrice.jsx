@@ -22,8 +22,8 @@ class FormattedPrice extends React.Component {
     static propTypes = {
         base_asset: ChainTypes.ChainAsset.isRequired,
         quote_asset: ChainTypes.ChainAsset.isRequired,
-        base_amount: React.PropTypes.number,
-        quote_amount: React.PropTypes.number,
+        base_amount: React.PropTypes.any,
+        quote_amount: React.PropTypes.any,
         invert: React.PropTypes.bool,
         decimals: React.PropTypes.number
     };  
@@ -55,18 +55,23 @@ class FormattedPrice extends React.Component {
            quote_amount = tmp_amount;
         }
 
-        let formatted_value = ''
+        let formatted_value = "";
         if (!this.props.hide_value) {
             let base_precision = utils.get_asset_precision(base_asset.get("precision"));
             let quote_precision = utils.get_asset_precision(quote_asset.get("precision"));
             let value = base_amount / base_precision / (quote_amount / quote_precision);
-
+            if (isNaN(value) || !isFinite(value)) {
+              return <span>n/a</span>;
+            }
             let decimals = this.props.decimals ? this.props.decimals : base_asset.get("precision") + quote_asset.get("precision");
-
+            decimals = Math.min(8, decimals);
+            if (base_asset.get("id") === "1.3.0") {
+              decimals = 4;
+            }
             formatted_value = (
                 <FormattedNumber
                     value={value}
-                    minimumFractionDigits={0}
+                    minimumFractionDigits={2}
                     maximumFractionDigits={decimals}
                 />
             );

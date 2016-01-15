@@ -1,0 +1,81 @@
+.trackItems {
+  width: 400px;
+  overflow: hidden;
+}
+
+.trackItem {
+  position: relative;
+  //background: #303030;
+  background: #cccccc; //muse-purple
+  padding: 6px;
+  border-radius: 15px;
+  margin-bottom: 4px;
+}
+
+.trackItem .track,
+.trackItem .artist {
+  position: absolute;
+  top: 5px;
+  left: 36px;
+  right: 10px;
+  height: 16px;
+  font: 12px 'Lucida Grande', Helvetica;
+  overflow: hidden;
+}
+.trackItem .artist {
+  top: 19px;
+  font-size: 10px;
+}
+
+.trackItem .previewPlayer {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  //background: #505050; /* Button */
+  background: #3A1041; //muse-purple
+  box-shadow: rgba(0, 0, 0, 0.5) -1px 1px;
+}
+.trackItem .previewPlayer.error,
+.trackItem .previewPlayer:not(.loaded) {
+  opacity: 0.5;
+}
+.trackItem .previewPlayer:not(.error).loaded:active {
+  background: #000;
+}
+.trackItem .previewPlayer:not(.error).loaded:active::before {
+  border-left-color: #FFF; /*hit play*/
+}
+.trackItem .previewPlayer.playing:not(.error).loaded:active::before {
+  border-color: #FFF; /*hit pause*/
+}
+.trackItem .previewPlayer::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 9px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  //border-left: 8px solid #50D2C2; /* Play icon - Graphene cyan */
+  border-left: 8px solid #21D19F; /* Play icon - Muse cyan */
+}
+.trackItem .previewPlayer.playing::before {
+  content: '';
+  position: absolute;
+
+  top: 7px;
+  left: 8px;
+  width: 8px;
+  height: 9px;
+  //border:10px solid #FCAB53; /* Pause icon - Graphene orange */
+  border:10px solid #DB4573; /* Pause icon - Muse red */
+  border-width:0 2px;
+}
+.trackItem .previewPlayer canvas {
+  position: absolute;
+  top: 0; 
+  width: 100%;
+  height: 100%;
+}
+

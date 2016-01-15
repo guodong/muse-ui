@@ -61,7 +61,8 @@ class WalletApi {
         encrypt_memo = true,
         optional_nonce = null
     ) {
-        return this.application_api.transfer(
+        console.error("deprecated, call application_api.transfer instead")
+        return this.application_api.transfer({
             from_account_id,
             to_account_id,
             amount, 
@@ -70,8 +71,8 @@ class WalletApi {
             broadcast,
             encrypt_memo,
             optional_nonce
-        )
+        })
     }
 
 }
-module.exports = WalletApi
+export default WalletApi

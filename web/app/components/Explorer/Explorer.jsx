@@ -25,7 +25,7 @@ class Explorer extends React.Component {
             <div className="grid-block page-layout flex-start">
                 <div className="grid-block regular-padding small-up-1 medium-up-2 large-up-3">
                         <ExplorerCard>
-                            <Link to="blocks">
+                            <Link to="explorer/blocks">
                                 <div>
                                     <Icon name="blocks" size="5x" fillClass="fill-black"/>
                                 </div>
@@ -35,7 +35,7 @@ class Explorer extends React.Component {
                             </Link>
                         </ExplorerCard>
                         <ExplorerCard>
-                            <Link to="assets">
+                            <Link to="explorer/assets">
                                 <div>
                                     <Icon name="assets" size="5x" fillClass="fill-black"/>
                                 </div>
@@ -45,7 +45,7 @@ class Explorer extends React.Component {
                             </Link>
                         </ExplorerCard>
                         <ExplorerCard>
-                            <Link to="accounts">
+                            <Link to="explorer/accounts">
                                 <div>
                                     <Icon name="accounts" size="5x" fillClass="fill-black"/>
                                 </div>
@@ -55,7 +55,7 @@ class Explorer extends React.Component {
                             </Link>
                         </ExplorerCard>
                         <ExplorerCard>
-                            <Link to="witnesses">
+                            <Link to="explorer/witnesses">
                                 <div>
                                     <Icon name="witnesses" size="5x" fillClass="fill-black"/>
                                 </div>
@@ -65,7 +65,7 @@ class Explorer extends React.Component {
                             </Link>
                         </ExplorerCard>
                         <ExplorerCard>
-                            <Link to="committee-members">
+                            <Link to="explorer/committee-members">
                                 <div>
                                     <Icon name="committee_members" size="5x" fillClass="fill-black"/>
                                 </div>
@@ -74,17 +74,27 @@ class Explorer extends React.Component {
                                 </div>
                             </Link>
                         </ExplorerCard>
-                        {/*<ExplorerCard>
-                            <Link to="blocks">
+                        <ExplorerCard>
+                            <Link to="explorer/markets">
                                 <div>
-                                    <Icon name="workers" size="5x" fillClass="fill-black"/>
+                                    <Icon name="markets" size="5x" fillClass="fill-black"/>
                                 </div>
                                 <div className="card-divider text-center">
-                                    <Translate component="span" content="explorer.workers.title" />
+                                    <Translate component="span" content="markets.title" />
                                 </div>
                             </Link>
                         </ExplorerCard>
                         <ExplorerCard>
+                            <Link to="explorer/fees">
+                                <div>
+                                    <Icon name="fees" size="5x" fillClass="fill-black"/>
+                                </div>
+                                <div className="card-divider text-center">
+                                    <Translate component="span" content="fees.title" />
+                                </div>
+                            </Link>
+                        </ExplorerCard>
+                        {/*<ExplorerCard>
                             <Link to="blocks">
                                 <div>
                                     <Icon name="proposals" size="5x" fillClass="fill-black"/>

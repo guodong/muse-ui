@@ -6,18 +6,21 @@ import Translate from "react-translate-component";
 import counterpart from "counterpart";
 import classNames from "classnames";
 import {FormattedDate} from "react-intl";
-import intlData from "../Utility/intlData";
 import {operations} from "chain/chain_types";
 import Inspector from "react-json-inspector";
 import utils from "common/utils";
 import LinkToAccountById from "../Blockchain/LinkToAccountById";
 import LinkToAssetById from "../Blockchain/LinkToAssetById";
 import FormattedPrice from "../Utility/FormattedPrice";
+import account_constants from "chain/account_constants";
+import Icon from "../Icon/Icon";
+import WalletUnlockActions from "actions/WalletUnlockActions";
 
 require("./operations.scss");
 require("./json-inspector.scss");
 
 let ops = Object.keys(operations);
+let listings = Object.keys(account_constants.account_listing);
 
 class OpType extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -82,7 +85,7 @@ class Transaction extends React.Component {
         let Link = this.props.no_links ? NoLinkDecorator : RealLink;
         return utils.is_object_id(name_or_id) ?
             <LinkToAccountById account={name_or_id}/> :
-            <Link to="account-overview" params={{account_name: name_or_id}}>{name_or_id}</Link>;
+            <Link to={`/account/${name_or_id}/overview`}>{name_or_id}</Link>;
     }
 
     linkToAsset(symbol_or_id) {
@@ -90,7 +93,14 @@ class Transaction extends React.Component {
         let Link = this.props.no_links ? NoLinkDecorator : RealLink;
         return utils.is_object_id(symbol_or_id) ?
             <LinkToAssetById asset={symbol_or_id}/> :
-            <Link to="asset" params={{symbol: symbol_or_id}}>{symbol_or_id}</Link>;
+            <Link to={`/asset/${symbol_or_id}`}>{symbol_or_id}</Link>;
+    }
+
+    _toggleLock(e) {
+        e.preventDefault();
+        WalletUnlockActions.unlock().then(() => {
+            this.forceUpdate();
+        })
     }
 
     render() {
@@ -110,6 +120,37 @@ class Transaction extends React.Component {
 
                     color = "success";
 
+                    let memo_text = null;
+
+                    let lockedWallet = false;
+                    if(op[1].memo) {
+                        let memo = op[1].memo;
+                        let from_private_key = PrivateKeyStore.getState().keys.get(memo.from)
+                        let to_private_key = PrivateKeyStore.getState().keys.get(memo.to)
+                        let private_key = from_private_key ? from_private_key : to_private_key;
+                        let public_key = from_private_key ? memo.to : memo.from;
+                        public_key = PublicKey.fromPublicKeyString(public_key)
+                        try {
+                            private_key = WalletDb.decryptTcomb_PrivateKey(private_key);
+                        }
+                        catch(e) {
+                            lockedWallet = true;
+                            private_key = null;
+                        }
+
+                        try {
+                            memo_text = private_key ? Aes.decrypt_with_checksum(
+                                private_key,
+                                public_key,
+                                memo.nonce,
+                                memo.message
+                            ).toString() : null;
+                        } catch(e) {
+                            console.log("transfer memo exception ...", e);
+                            memo_text = "*";
+                        }
+                    }
+
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="transfer.from" /></td>
@@ -128,6 +169,27 @@ class Transaction extends React.Component {
                             <td><FormattedAsset amount={op[1].amount.amount} asset={op[1].amount.asset_id} /></td>
                         </tr>
                     );
+
+                    {memo_text ?
+                        rows.push(
+                            <tr>
+                                <td><Translate content="transfer.memo" /></td>
+                                <td>{memo_text}</td>
+                            </tr>
+                    ) : null}
+
+                    {op[1].memo && lockedWallet ?
+                        rows.push(
+                            <tr>
+                                <td><Translate content="transfer.memo" /></td>
+                                <td>
+                                    <Translate content="transfer.memo_unlock" />&nbsp;
+                                    <a href onClick={this._toggleLock.bind(this)}>
+                                        <Icon name="locked"/>
+                                    </a>
+                                </td>
+                            </tr>
+                    ) : null}
 
                     break;
 
@@ -177,7 +239,6 @@ class Transaction extends React.Component {
                             <td>
                                 <FormattedDate
                                     value={op[1].expiration}
-                                    formats={intlData.formats}
                                     format="full"
                                 />
                             </td>
@@ -300,8 +361,8 @@ class Transaction extends React.Component {
                     }
                     else
                     {
-                       console.log( "num witnesses: ", op[1].new_options.num_witness ) 
-                       console.log( "===============> NEW: ", op[1].new_options ) 
+                       console.log( "num witnesses: ", op[1].new_options.num_witness )
+                       console.log( "===============> NEW: ", op[1].new_options )
                        rows.push(
                                    <tr>
                                        <td><Translate component="span" content="account.votes.proxy" /></td>
@@ -335,9 +396,24 @@ class Transaction extends React.Component {
                                 </tr>
                     );
 
+                    rows.push(
+                        <tr>
+                            <td><Translate component="span" content="explorer.block.common_options" /></td>
+                            <td><Inspector data={ op[1] } search={false} /></td>
+                        </tr>
+                    );
+
                     break;
 
                 case "account_whitelist":
+                    let listing;
+                    for (var i = 0; i < listings.length; i++) {
+                        if (account_constants.account_listing[listings[i]] === op[1].new_listing) {
+                            console.log("listings:", listings[i]);
+                            listing = listings[i];
+                        }
+                    };
+
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="explorer.block.authorizing_account" /></td>
@@ -353,13 +429,13 @@ class Transaction extends React.Component {
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="explorer.block.new_listing" /></td>
-                            <td>{op[1].new_listing.toString()}</td>
+                            <td><Translate content={`transaction.whitelist_states.${listing}`} /></td>
                         </tr>
                     );
 
                     break;
 
-                case "account_upgrade":                    
+                case "account_upgrade":
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="explorer.block.account_upgrade" /></td>
@@ -387,6 +463,7 @@ class Transaction extends React.Component {
 
                 case "asset_create":
                     color = "warning";
+
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="explorer.assets.issuer" /></td>
@@ -408,7 +485,7 @@ class Transaction extends React.Component {
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="account.user_issued_assets.max_supply" /></td>
-                            <td><FormattedAsset amount={op[1].common_options.max_supply} asset={op[1].symbol} /></td>
+                            <td>{utils.format_asset(op[1].common_options.max_supply, op[1])}</td>
                         </tr>
                     );
                     rows.push(
@@ -420,13 +497,13 @@ class Transaction extends React.Component {
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="transaction.market_fee" /></td>
-                            <td>{op[1].common_options.market_fee_percent / 1000}%</td>
+                            <td>{op[1].common_options.market_fee_percent / 100}%</td>
                         </tr>
                     );
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="transaction.max_market_fee" /></td>
-                            <td>{op[1].common_options.max_market_fee / 1000}%</td>
+                            <td>{utils.format_asset(op[1].common_options.max_market_fee, op[1])}</td>
                         </tr>
                     );
                     rows.push(
@@ -440,7 +517,7 @@ class Transaction extends React.Component {
 
                 case "asset_update":
                 case "asset_update_bitasset":
-                    color = "warning";                    
+                    color = "warning";
 
                     rows.push(
                         <tr>
@@ -454,6 +531,28 @@ class Transaction extends React.Component {
                             <td>{this.linkToAccount(op[1].issuer)}</td>
                         </tr>
                     );
+                    if (op[1].new_issuer !== op[1].issuer) {
+                        rows.push(
+                            <tr>
+                                <td><Translate component="span" content="account.user_issued_assets.new_issuer" /></td>
+                                <td>{this.linkToAccount(op[1].new_issuer)}</td>
+                            </tr>
+                        );
+                        }
+                    rows.push(
+                        <tr>
+                            <td><Translate component="span" content="markets.core_rate" /></td>
+                            <td>
+                                <FormattedPrice
+                                    base_asset={op[1].new_options.core_exchange_rate.base.asset_id}
+                                    quote_asset={op[1].new_options.core_exchange_rate.quote.asset_id}
+                                    base_amount={op[1].new_options.core_exchange_rate.base.amount}
+                                    quote_amount={op[1].new_options.core_exchange_rate.quote.amount}
+                                />
+                            </td>
+                        </tr>
+                    );
+
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="explorer.block.new_options" /></td>
@@ -489,7 +588,7 @@ class Transaction extends React.Component {
 
                 case "asset_issue":
                     color = "warning";
-                    
+
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="explorer.assets.issuer" /></td>
@@ -534,7 +633,6 @@ class Transaction extends React.Component {
 
                 case "asset_fund_fee_pool":
                     color = "warning";
-
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="explorer.account.title" /></td>
@@ -552,7 +650,7 @@ class Transaction extends React.Component {
                     rows.push(
                         <tr>
                             <td><Translate component="span" content="transfer.amount" /></td>
-                            <td><FormattedAsset amount={op[1].amount} asset={op[1].asset_id} /></td>
+                            <td><FormattedAsset amount={op[1].amount} asset="1.3.0" /></td>
                         </tr>
                     );
 
@@ -585,7 +683,7 @@ class Transaction extends React.Component {
                     break;
 
                 case "asset_publish_feed":
-                    color = "warning";                    
+                    color = "warning";
                     let {feed} = op[1];
 
                     rows.push(
@@ -624,8 +722,8 @@ class Transaction extends React.Component {
                                     base_asset={feed.core_exchange_rate.base.asset_id}
                                     quote_asset={feed.core_exchange_rate.quote.asset_id}
                                     base_amount={feed.core_exchange_rate.base.amount}
-                                    quote_amount={feed.core_exchange_rate.quote.amount} 
-                                />  
+                                    quote_amount={feed.core_exchange_rate.quote.amount}
+                                />
                             </td>
                         </tr>
                     );
@@ -638,7 +736,7 @@ class Transaction extends React.Component {
                                     base_asset={feed.settlement_price.base.asset_id}
                                     quote_asset={feed.settlement_price.quote.asset_id}
                                     base_amount={feed.settlement_price.base.amount}
-                                    quote_amount={feed.settlement_price.quote.amount} 
+                                    quote_amount={feed.settlement_price.quote.amount}
                                 />
                             </td>
                         </tr>
@@ -646,7 +744,7 @@ class Transaction extends React.Component {
 
                     break;
 
-                case "committee_member_create":                    
+                case "committee_member_create":
 
                     rows.push(
                         <tr>
@@ -724,13 +822,13 @@ class Transaction extends React.Component {
                     color = "success";
 
                     rows.push(
-                        <tr>
+                        <tr key="1">
                             <td><Translate component="span" content="transfer.to" /></td>
                             <td>{this.linkToAccount(op[1].owner)}</td>
                         </tr>
                     );
                     rows.push(
-                        <tr>
+                        <tr key="2">
                             <td><Translate component="span" content="transfer.amount" /></td>
                             <td><FormattedAsset amount={op[1].amount.amount} asset={op[1].amount.asset_id} /></td>
                         </tr>
@@ -738,8 +836,104 @@ class Transaction extends React.Component {
 
                     break;
 
-                default: 
-                    rows = null;
+                case "transfer_to_blind":
+                    rows.push(
+                        <tr  key="1">
+                            <td><Translate component="span" content="transfer.from" /></td>
+                            <td>{this.linkToAccount(op[1].from)}</td>
+                        </tr>
+                    );
+                    rows.push(
+                        <tr  key="2">
+                            <td><Translate component="span" content="transfer.amount" /></td>
+                            <td><FormattedAsset amount={op[1].amount.amount} asset={op[1].amount.asset_id} /></td>
+                        </tr>
+                    );
+                    rows.push(
+                        <tr key="3">
+                            <td><Translate component="span" content="transaction.blinding_factor" /></td>
+                            <td style={{fontSize: "80%"}}>{op[1].blinding_factor}</td>
+                        </tr>
+                    );
+                    rows.push(
+                        <tr key="4">
+                            <td><Translate component="span" content="transaction.outputs" /></td>
+                            <td><Inspector data={ op[1].outputs[0] } search={false} /></td>
+                        </tr>
+                    );
+                    break;
+
+                case "transfer_from_blind":
+                    rows.push(
+                        <tr  key="1">
+                            <td><Translate component="span" content="transfer.to" /></td>
+                            <td>{this.linkToAccount(op[1].to)}</td>
+                        </tr>
+                    );
+                    rows.push(
+                        <tr  key="2">
+                            <td><Translate component="span" content="transfer.amount" /></td>
+                            <td><FormattedAsset amount={op[1].amount.amount} asset={op[1].amount.asset_id} /></td>
+                        </tr>
+                    );
+                    rows.push(
+                        <tr key="3">
+                            <td><Translate component="span" content="transaction.blinding_factor" /></td>
+                            <td style={{fontSize: "80%"}}>{op[1].blinding_factor}</td>
+                        </tr>
+                    );
+                    rows.push(
+                        <tr key="4">
+                            <td><Translate component="span" content="transaction.inputs" /></td>
+                            <td><Inspector data={ op[1].inputs[0] } search={false} /></td>
+                        </tr>
+                    );
+                    break;
+
+                case "blind_transfer":
+                    rows.push(
+                        <tr key="1">
+                            <td><Translate component="span" content="transaction.inputs" /></td>
+                            <td><Inspector data={ op[1].inputs[0] } search={false} /></td>
+                        </tr>
+                    );
+                    rows.push(
+                        <tr key="2">
+                            <td><Translate component="span" content="transaction.outputs" /></td>
+                            <td><Inspector data={ op[1].outputs[0]} search={false} /></td>
+                        </tr>
+                    );
+                    break;
+
+                case "asset_claim_fees":
+                    color = "success";
+
+                    rows.push(
+                        <tr>
+                            <td><Translate component="span" content="transaction.claimed" /></td>
+                            <td><FormattedAsset amount={op[1].amount_to_claim.amount} asset={op[1].amount_to_claim.asset_id} /></td>
+                        </tr>
+                    );
+
+                    rows.push(
+                        <tr>
+                            <td><Translate component="span" content="transaction.deposit_to" /></td>
+                            <td>{this.linkToAccount(op[1].issuer)}</td>
+                        </tr>
+                    );
+                    
+                    break;
+
+
+
+                default:
+                    console.log("unimplemented op:", op);
+                    rows.push(
+                        <tr >
+                            <td><Translate component="span" content="explorer.block.op" /></td>
+                            <td><Inspector data={ op } search={false} /></td>
+                        </tr>
+                    );
                     break;
             }
 

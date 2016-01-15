@@ -24,13 +24,14 @@ module.exports = {
         account: "账户",
         help: "帮助",
         locked_tip: "钱包已锁定，点击解锁。",
-        unlocked_tip: "钱包已解锁，点击锁定。"
+        unlocked_tip: "钱包已解锁，点击锁定。",
+        update_asset: "更新资产"
     },
     account: {
         welcome: "欢迎使用 Graphene (石墨烯)系统",
         assets: "资产",
         market_value: "市值",
-        hour_24: "24小时",
+        hour_24: "日涨跌幅%",
         recent: "近期活动",
         name: "账户名",
         member: {
@@ -60,7 +61,14 @@ module.exports = {
             upgrade_lifetime: "购买终身会籍",
             subscribe: "购买1年会籍",
             expires: "过期时间",
-            membership_expiration: "会籍过期时间"
+            membership_expiration: "会籍过期时间",
+            fees_cashback: "手续费及现金返回",
+            coindays: "币天",
+            earned: "已完成币天",
+            required: "要求的币天",
+            remaining: "剩余解冻天数",
+            claim: "立即领取",
+            available: "可领取数量"
         },
         connections: {
             known: "识别为",
@@ -75,11 +83,41 @@ module.exports = {
             max_supply: "最大供给量",
             precision: "精度",
             to: "发行到账户",
-            details: "详细"
+            details: "详细",
+            market_fee: "交易手续费率",
+            max_market_fee: "最大交易手续费",
+            primary: "主要设定",
+            optional: "可选设定",
+            approx_fee: "资产创建费用预估",
+            exists: "资产代码已存在",
+            max_positive: "最大供应量必须是个大于0",
+            core_exchange_rate: "手续费汇率",
+            quote: "报价资产数量",
+            quote_name: "报价资产",
+            base: "基础资产数量",
+            base_name: "基础资产",
+            update_owner: "更新发行人",
+            current_issuer: "当前发行人",
+            new_issuer: "新发行人",
+            flags: "旗标",
+            charge_market_fee: "收取交易手续费",
+            override_authority: "发行人可将资产收回",
+            transfer_restricted: "所有转账必须通过发行人审核同意",
+            disable_confidential: "禁止隐私交易",
+            white_list: "要求资产持有人预先加入白名单",
+            witness_fed_asset: "允许见证人提供喂价",
+            committee_fed_asset: "允许理事会成员提供喂价",
+            disable_force_settle: "禁止强制清算",
+            global_settle: "允许发行人进行全局强制清算",
+            advanced: "高级设定",
+            need_asset: "这两个资产中至少有一个必须为 %(name)s",
+            perm_warning: "警告：有些设定的禁用操作不可逆，生效后将无法重新启用。",
+            issued_assets: "我发行的资产"
         },
         perm: {
             active: "活跃权限",
             owner: "账户权限",
+            memo_key: "备注密钥",
             publish: "保存修改",
             reset: "重置修改",
             add: "增加权限",
@@ -91,9 +129,17 @@ module.exports = {
             cancel: "取消",
             add_permission_label: "输入账户名/公钥以及权重",
             account_name_or_key: "账户名或公钥",
-            memo_public_key: "备注公钥"
+            memo_public_key: "备注公钥",
+            warning1: "活跃权限权重总和 %(weights_total)s 应不小于阀值设定 %(threshold)s",
+            warning2: "账户权限权重总和 %(weights_total)s 应不小于阀值设定 %(threshold)s",
+            warning3: "账户名被授权",
+            warning4: "公钥已被授权",
+            action: "操作",
+            acct_or_key: " 账户名/公钥"
         },
         votes: {
+            proxy_short: "代理投票",
+            workers_short: "预算项目",
             proxy: "代理投票账户",
             no_proxy: "无代理",
             name: "账户名",
@@ -110,7 +156,22 @@ module.exports = {
             add_committee_label: "理事会成员",
             add_witness_label: "见证人",
             approve_worker: "赞成",
-            reject_worker: "反对"
+            reject_worker: "反对",
+            worker_account: "申请账户",
+            total_votes: "赞成票数",
+            votes_against: "反对票数",
+            daily_pay: "每日预算",
+            max_pay: "最大预算",
+            unclaimed: "未发放预算",
+            status: {
+                title: "我的立场",
+                supported: "已支持",
+                rejected: "已反对",
+                neutral: "中立"
+            },
+            clear_proxy: "移除投票代理",
+            start: "开始时间",
+            end: "结束时间"
         },
         options: {
             num_witnesses: "信任见证人",
@@ -142,7 +203,39 @@ module.exports = {
         identicon: "身份标示图形",
         pay_from: "注册费支付账户",
         existing_accounts: "已有账户",
-        bts_market: "交易市场"
+        bts_market: "交易市场",
+        name_input: {
+            name_is_taken: "账户名已经被使用",
+            not_found: "账户未找到",
+            premium_name_faucet: "你使用的是高级账户名。高级账户名的注册需要花费更多，因为无法通过免费水龙头服务进行注册。请选择其他名字，包含至少一个横杠、数字或者不含元音字母",
+            premium_name_warning: "这是高级账户名。高级账户名的注册需要花费更多，因为无法通过免费水龙头服务进行注册。请选择其他名字，包含至少一个横杠、数字或者不含元音字母"
+        },
+        propose_from: "发起账户",
+        percent: "供给占比",
+        settle: "清算",
+        no_orders: "暂无委单",
+        as_collateral: "债仓",
+        open_orders: "委单",
+        total_value: "市值",
+        asset_details: "资产详情",
+        id: "账户 ID",
+        whitelist: {
+            title: "白名单",
+            black: "黑名单",
+            add: "加到白名单",
+            add_black: "加到黑名单",
+            empty: "%(account)s 没有设置白名单。",
+            empty_black: "%(account)s 没有设置黑名单。",
+            white_by: "被列白名单",
+            black_by: "被列黑名单",
+            empty_white_by: "%(account)s 未被列入任何白名单",
+            empty_black_by: "%(account)s 未被列入任何黑名单"
+        },
+        vesting: {
+            title: "待解冻余额",
+            balance_number: "余额 #%(id)s",
+            no_balances: "该账户无待解冻余额"
+        }
     },
     transfer: {
         from: "来自",
@@ -157,7 +250,8 @@ module.exports = {
             req: "必填信息",
             pos: "数量必须大于0",
             valid: "请输入一个合法的大于0的半角数字",
-            balance: "最终余额必须大于0"
+            balance: "最终余额必须大于0",
+            insufficient: "余额不足"
         },
         back: "返回",
         confirm: "确认发送",
@@ -167,7 +261,8 @@ module.exports = {
         available: "可用余额: ",
         broadcasting: "交易广播中...",
         close: "关闭",
-        pay_from: "支付自"
+        pay_from: "支付自",
+        memo_unlock: "解锁钱包以查看交易备注"
     },
     transaction: {
         sent: "发送",
@@ -277,7 +372,12 @@ module.exports = {
             balance_claim: "领取余额",
             override_transfer: "优先覆盖转账",
             witness_update: "更新见证人",
-            committee_member_update_global_parameters: "全局参数更新"
+            committee_member_update_global_parameters: "全局参数更新",
+            transfer_to_blind: "向隐私账户转账",
+            blind_transfer: "隐私转账",
+            transfer_from_blind: "从隐私账户转出",
+            committee_member_update: "更新理事会成员账户",
+            asset_claim_fees: "领取资产手续费"
         },
         confirm: "请确认交易",
         broadcast_success: "交易已向网络广播",
@@ -299,7 +399,42 @@ module.exports = {
         new_url: "网站",
         publisher: "发布人",
         lifetime_upgrade_account: "升级到终身会员",
-        annual_upgrade_account: "升级到年度会员"
+        annual_upgrade_account: "升级到年度会员",
+        market_fee: "市场手续费",
+        max_market_fee: "最大市场手续费",
+        blinding_factor: "隐私因子",
+        outputs: "输出",
+        inputs: "输入",
+        feeGroups: {
+            general: "一般费率",
+            asset: "资产相关",
+            market: "市场相关",
+            account: "账户相关",
+            business: "业务管理"
+        },
+        feeTypes: {
+            _none: "免费",
+            fee: "普通转账手续费",
+            price_per_kbyte: "交易字节数，每千字节手续费",
+            basic_fee: "普通用户名手续费",
+            premium_fee: "高级用户名手续费",
+            membership_annual_fee: "年度会籍",
+            membership_lifetime_fee: "终身会籍",
+            symbol3: "资产符号长度3位",
+            symbol4: "资产符号长度4位",
+            long_symbol: "更长的资产符号"
+        },
+        asset_claim_fees: "从 %(asset)s 资产手续费池中领取 %(balance_amount)s 资产手续费",
+        settlement_date: "清算时间",
+        set_proxy: "设置 %(proxy)s 为投票代理人",
+        unlisted_by: "%(lister)s 从列表移除 %(listee)s",
+        blacklisted_by: "%(lister)s 将 %(listee)s 加入黑名单",
+        whitelist_states: {
+            no_listing: "从列表移除",
+            white_listed: "加入白名单",
+            black_listed: "加入黑名单",
+            white_and_black_listed: "加入白/黑名单"
+        }
     },
     explorer: {
         accounts: {
@@ -343,9 +478,9 @@ module.exports = {
             listed_account: "Listed account",
             new_listing: "New listing",
             asset_update: "可更新资产",
-            common_options: "Common options",
-            new_options: "New options",
-            new_producers: "New feed producers",
+            common_options: "参数设定",
+            new_options: "新的设定",
+            new_producers: "新的喂价提供者",
             asset_issue: "发行数量",
             max_margin_period_sec: "Max margin period (s)",
             call_limit: "Call limit",
@@ -383,23 +518,19 @@ module.exports = {
                 core_exchange_rate: "汇率",
                 pool_balance: "资金池余额",
                 unclaimed_issuer_income: "发行人未申领收入",
-                title: "手续费资金池"
+                title: "手续费资金池",
+                claim_fees: "领取手续费",
+                fund_text: "手续费最终以%(core)s形态进行支付。手续费资金池用来承担从%(asset)s转换为%(core)s的费用，以便用户可以使用%(asset)s来支付手续费。",
+                claim_text: "资产发行人可以在这里领取累积的资产手续费。"
             },
             permissions: {
+                title: "权限",
                 max_market_fee: "交易市场手续费上限",
                 max_supply: "最大供给",
-                chargeMarketFee: "收取交易手续费",
-                allowWhiteList: "允许持仓账户白名单",
-                allowIssuerOverride: "允许发行人变更",
-                restrictTransfers: "限制资产转账",
-                allowForceSettle: "允许强制清算",
-                allowGlobalSettle: "允许全局清算",
-                allowStealthTransfer: "允许隐私转账",
                 blacklist_authorities: "黑名单职权实体",
                 blacklist_markets: "禁止交易对市场",
                 whitelist_authorities: "白名单职权实体",
-                whitelist_markets: "允许交易对市场",
-                title: "权限"
+                whitelist_markets: "允许交易对市场"
             },
             price_feed_data: {
                 title: "喂价数据",
@@ -432,7 +563,7 @@ module.exports = {
             title: "理事会成员"
         },
         workers: {
-            title: "雇员"
+            title: "预算项目"
         },
         proposals: {
             title: "提案"
@@ -452,7 +583,12 @@ module.exports = {
         wallets: "钱包管理",
         connection: "API 服务器设定",
         add_ws: "添加新的 websocket API",
-        remove_ws: "删除 websocket API"
+        remove_ws: "删除 websocket API",
+        faucet_address: "水龙头地址",
+        showSettles: "在深度图中显示清算订单",
+        yes: "是",
+        no: "否",
+        walletLockTimeout: "钱包自动锁定时间（秒）"
     },
     pagination: {
         newer: "更近",
@@ -468,12 +604,12 @@ module.exports = {
         order_depth: "市场深度",
         market_history: "市场历史",
         balance: "我的余额",
-        lowest_ask: "最低卖单",
-        highest_bid: "最高买单",
+        lowest_ask: "最低卖价",
+        highest_bid: "最高买价",
         total: "成交额",
         value: "数量",
         price: "价格",
-        latest: "最新价格",
+        latest: "最新成交价",
         call: "赎回价格",
         volume: "成交量",
         spread: "买卖价差",
@@ -492,12 +628,40 @@ module.exports = {
         horizontal: "水平布局",
         market_name: "市场名称",
         quote_supply: "报价资产供给量",
-        base_supply: "基础资产供给量"
+        base_supply: "基础资产供给量",
+        more: "更多交易对",
+        market: "交易对",
+        history: "交易历史",
+        my_history: "我的交易历史",
+        vol_short: "量",
+        volume_24: "日成交量",
+        change: "涨跌幅",
+        confirm: "你的订单价偏离当前价 %(diff)s% , 你确定么?",
+        indicators: "技术指标",
+        rsi: "相对强弱指数(rsi)",
+        ema: "指数移动平均线(ema)",
+        sma: "算数移动平均线(sma)",
+        atr: "平均真实波幅(atr)",
+        period: "周期 (天)",
+        overbought: "超买",
+        oversold: "超卖",
+        index: "指数",
+        my_bids: "我的买单",
+        my_asks: "我的卖单",
+        settle_orders: "清算单",
+        asks: "卖单",
+        bids: "买单",
+        no_data: "暂无数据",
+        time: "时间间隔",
+        borrow: "借入",
+        no_balance: "余额不足",
+        invalid_amount: "数量错误",
+        invalid_price: "价格错误"
     },
     markets: {
-        choose_base: "选择基准资产",
+        title: "交易所",
         filter: "筛选",
-        core_rate: "CORE 汇率",
+        core_rate: "MUSE 汇率",
         supply: "供应量",
         search: "搜索",
         base: "基准资产",
@@ -590,7 +754,8 @@ module.exports = {
         call_limit: "Market Call Limit"
     },
     operation: {
-        pending: " %(blocks)s 个区块待定"
+        pending: " %(blocks)s 个区块待定",
+        no_recent: "近期无交易"
     },
     modal: {
         issue: {
@@ -602,6 +767,12 @@ module.exports = {
             amount: "提现金额",
             address: "提现到地址",
             submit: "提现"
+        },
+        ok: "确定",
+        settle: {
+            title: "请求清算资产%(asset)s",
+            amount: "数量",
+            submit: "清算资产"
         }
     },
     init_error: {
@@ -609,6 +780,44 @@ module.exports = {
         ws_status: "Websocket 连接状态",
         retry: "重试",
         connected: "已连接",
-        not_connected: "未连接"
+        not_connected: "未连接",
+        browser: "不支持的浏览器",
+        browser_text: "你使用的浏览器(版本)未经过BitShares钱包软件的充分测试。强烈建议你备份钱包，并将其导入谷歌Chrome浏览器。今后进过我们充分测试后，你或许可以继续使用现在的浏览器。请了解相关风险。",
+        understand: "我理解"
+    },
+    refcode: {
+        claim: "领取",
+        claim_refcode: "领取推荐码",
+        refcode_optional: "推荐码 (可选)",
+        enter_refcode: "输入推荐码"
+    },
+    gateway: {
+        bridge: "桥接",
+        gateway: "承兑商",
+        symbol: "资产",
+        deposit_to: "充值地址",
+        balance: "余额",
+        generate: "生成地址",
+        deposit: "充值",
+        withdraw: "提现",
+        inventory: "库存",
+        scan_qr: "扫描二维码，手机支付",
+        transwiser: {
+            gateway: "Transwiser",
+            visit_weidian: "访问网店进行充值",
+            deposit_title: "充值人民币到 %(asset)s",
+            withdraw_title: "提现 %(asset)s 到人民币",
+            alipay: "支付宝账户名",
+            withdraw_note: "目前仅支持支付宝提现，将资产按1:1比例兑换成人民币发送到您的支付宝账户中",
+            you_will_receive: "您将收到 %(amount)s 元人民币"
+        },
+        meta: {
+            open_website: "访问官网"
+        }
+    },
+    propose: "提议",
+    cancel: "取消",
+    fees: {
+        title: "费率表"
     }
 };

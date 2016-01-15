@@ -1,4 +1,4 @@
-Promise = require '../common/Promise'
+#Promise = require '../common/Promise'
 PublicKey = require '../ecc/key_public'
 
 v = require '../chain/serializer_validation'
@@ -45,7 +45,7 @@ class Lookup
         return i unless i is undefined
         asset_name = name_or_id
         return resolve: 0 if (
-            asset_name is "CORE" or
+            asset_name is "MUSE" or
             asset_name is chain_config.address_suffix
         )
         @_private.deferred_property "assetname", "id", asset_name
