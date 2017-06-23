@@ -13,7 +13,8 @@ class SettingsStore {
 
         this.settings = Immutable.Map({
             locale: "en",
-            connection: "ws://52.6.149.0/ws",
+//            connection: "ws://52.6.149.0/ws",
+			connection: 'ws://139.129.54.169:8090',
             faucet_address: "http://52.6.149.0"
         });
 
